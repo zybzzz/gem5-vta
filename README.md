@@ -1,3 +1,29 @@
+# gem5-vta
+## work directories and environment
+```
+src/vta #main work directory
+```
+python: 3.8  
+tvm vta: 0.15.dev0
+
+## about make command
+```
+make vta #compile
+make run #run the script
+make clean # remove work directory
+```
+
+## Tips
+1. The working directory is listed above, if you add a new working directory, please change the README and raise pr.
+2. **Use English throughout the project, whether adding comments or commits.**
+3. When making changes to the project, do so on your own branch. If you are done, you can raise pr.
+4. Use github issue for discussion.
+5. When submitting a commit, you can't use too simple a description, which is not conducive to maintenance. You can download the commit plugin to help describe more detailed commit information.
+
+## Common Error
+E: Can't find python installation.  
+A: Check your python environment. If your python installs correctly, delete the build directory and recompile.
+
 # The gem5 Simulator
 
 This is the repository for the gem5 simulator. It contains the full source code

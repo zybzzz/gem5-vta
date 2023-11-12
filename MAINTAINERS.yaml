@@ -334,3 +334,10 @@ website:
   maintainers:
     - Bobby Bruce <bbruce@ucdavis.edu>
     - Hoa Nguyen <hoanguyen@ucdavis.edu>
+
+vta:
+  desc: >-
+    simulate vta in gem5
+  status: maintained
+  maintainers:
+    - Yibo Zhang <yb_zhang@mail.ustc.edu.cn>

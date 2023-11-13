@@ -8,16 +8,16 @@ namespace gem5
 BaseVTA::BaseVTA(const Params &params) :
     SimObject(params),
     begin_event([this] { processBeginEvent(); }, name() + ".beginEvent"),
-    hardware_version(params.HW_VER),
-    input_data_width(1 << params.LOG_INP_WIDTH),
-    weight_data_width(1 << params.LOG_WGT_WIDTH),
-    accumulator_data_width(1 << params.LOG_ACC_WIDTH),
-    batch_size(1 << params.LOG_BATCH),
-    block_size(1 << params.LOG_BLOCK),
-    uop_buffer_size(1 << params.LOG_UOP_BUFF_SIZE),
-    input_buffer_size(1 << params.LOG_INP_BUFF_SIZE),
-    weight_buffer_size(1 << params.LOG_WGT_BUFF_SIZE),
-    accumulator_buffer_size(1 << params.LOG_ACC_BUFF_SIZE)
+    hardware_version(params.hardware_version),
+    input_data_width(1 << params.log_input_width),
+    weight_data_width(1 << params.log_wight_width),
+    accumulator_data_width(1 << params.log_accumulator_width),
+    batch_size(1 << params.log_batch),
+    block_size(1 << params.log_block),
+    uop_buffer_size(1 << params.log_micro_op_buff_size),
+    input_buffer_size(1 << params.log_input_buff_size),
+    weight_buffer_size(1 << params.log_weight_buff_size),
+    accumulator_buffer_size(1 << params.log_accumulator_buff_size)
 {
     DPRINTF(BaseVTAFlag, "===========================================\n");
 

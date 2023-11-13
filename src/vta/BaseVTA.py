@@ -17,18 +17,22 @@ class BaseVTA(SimObject):
 
     # VTA configs
     # reference at https://tvm.apache.org/docs/topic/vta/dev/config.html#parameters-overview
-    HW_VER = Param.String("0.0.1", "VTA hardware version number.")
-    LOG_INP_WIDTH = Param.Int(0, "Input data type signed integer width.")
-    LOG_WGT_WIDTH = Param.Int(0, "Weight data type signed integer width.")
-    LOG_ACC_WIDTH = Param.Int(0, "Accumulator data type signed integer width.")
-    LOG_BATCH = Param.Int(
+    hardware_version = Param.String("0.0.1", "VTA hardware version number.")
+    log_input_width = Param.Int(0, "Input data type signed integer width.")
+    log_wight_width = Param.Int(0, "Weight data type signed integer width.")
+    log_accumulator_width = Param.Int(
+        0, "Accumulator data type signed integer width."
+    )
+    log_batch = Param.Int(
         0, "VTA matrix multiply intrinsic input/output dimension 0."
     )
-    LOG_BLOCK = Param.Int(0, "VTA matrix multiply inner dimensions.")
-    LOG_UOP_BUFF_SIZE = Param.Int(0, "Micro-op on-chip buffer in Bytes.")
-    LOG_INP_BUFF_SIZE = Param.Int(0, "Input on-chip buffer in Bytes.")
-    LOG_WGT_BUFF_SIZE = Param.Int(0, "Weight on-chip buffer in Bytes.")
-    LOG_ACC_BUFF_SIZE = Param.Int(0, "Accumulator on-chip buffer in Bytes.")
+    log_block = Param.Int(0, "VTA matrix multiply inner dimensions.")
+    log_micro_op_buff_size = Param.Int(0, "Micro-op on-chip buffer in Bytes.")
+    log_input_buff_size = Param.Int(0, "Input on-chip buffer in Bytes.")
+    log_weight_buff_size = Param.Int(0, "Weight on-chip buffer in Bytes.")
+    log_accumulator_buff_size = Param.Int(
+        0, "Accumulator on-chip buffer in Bytes."
+    )
 
     ################################################################################
     ########################## the components of VTA ###############################

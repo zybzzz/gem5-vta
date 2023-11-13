@@ -1,9 +1,9 @@
 from m5.params import *
 from m5.SimObject import SimObject
-from m5.objects.Buffers import *
+from m5.objects.Buffer import *
 from m5.objects.ComputerModule import *
-from m5.objects.DataQueues import *
-from m5.objects.InstQueues import *
+from m5.objects.DataQueue import *
+from m5.objects.InstructionQueue import *
 from m5.objects.InstructionFetchModule import *
 from m5.objects.LoadModule import *
 from m5.objects.StoreModule import *
@@ -38,30 +38,34 @@ class BaseVTA(SimObject):
     ########################## the components of VTA ###############################
 
     ## buffers
-    input_buffer = Param.InputBuffer(InputBuffer(), "VTA inputbuffer")
-    weight_buffer = Param.WeightBuffer(WeightBuffer(), "VTA weightbuffer")
-    output_buffer = Param.OutputBuffer(OutputBuffer(), "VTA outputbuffer")
+    input_buffer = Param.Buffer(Buffer(), "VTA inputbuffer")
+    weight_buffer = Param.Buffer(Buffer(), "VTA weightbuffer")
+    output_buffer = Param.Buffer(Buffer(), "VTA outputbuffer")
 
     ## data queues
-    cmp2st_queue = Param.CMP2STQueue(
-        CMP2STQueue(), "computer module to store module queue"
+    cmp2st_queue = Param.DataQueue(
+        DataQueue(), "computer module to store module queue"
     )
-    st2cmp_queue = Param.ST2CMPQueue(
-        ST2CMPQueue(), "store module to computer module queue"
+    st2cmp_queue = Param.DataQueue(
+        DataQueue(), "store module to computer module queue"
     )
-    cmp2ld_queue = Param.CMP2LDQueue(
-        CMP2LDQueue(), "computer module to load module queue"
+    cmp2ld_queue = Param.DataQueue(
+        DataQueue(), "computer module to load module queue"
     )
-    ld2cmp_queue = Param.LD2CMPQueue(
-        LD2CMPQueue(), "load module to computer module queue"
+    ld2cmp_queue = Param.DataQueue(
+        DataQueue(), "load module to computer module queue"
     )
 
     ## instruction queues
-    load_queue = Param.LoadQueue(LoadQueue(), "load instruction queue")
-    computer_queue = Param.ComputerQueue(
-        ComputerQueue(), "computer instruction queue"
+    load_queue = Param.InstructionQueue(
+        InstructionQueue(), "load instruction queue"
     )
-    store_queue = Param.StoreQueue(StoreQueue(), "store instruction queue")
+    computer_queue = Param.InstructionQueue(
+        InstructionQueue(), "computer instruction queue"
+    )
+    store_queue = Param.InstructionQueue(
+        InstructionQueue(), "store instruction queue"
+    )
 
     ## regular module
     instruction_fetch_module = Param.InstructionFetchModule(

@@ -1,5 +1,4 @@
 #include "vta/computer_module.hh"
-
 #include "base/trace.hh"
 #include "debug/BaseVTAFlag.hh"
 

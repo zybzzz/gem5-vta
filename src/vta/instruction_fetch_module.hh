@@ -16,6 +16,7 @@ class InstructionFetchModule : public SimObject
 
   public:
     PARAMS(InstructionFetchModule);
+
     InstructionFetchModule(const Params &params);
 };
 } // namespace gem5

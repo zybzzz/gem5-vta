@@ -12,6 +12,7 @@ class StoreModule : public SimObject
 {
   private:
     InstructionQueue *storeCommandQueue;
+
     DataQueue *cmp2StQueue;
     DataQueue *st2CmpQueue;
 
@@ -19,6 +20,7 @@ class StoreModule : public SimObject
 
   public:
     PARAMS(StoreModule);
+
     StoreModule(const Params &params);
 };
 } // namespace gem5

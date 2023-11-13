@@ -11,8 +11,11 @@ class DataQueue : public SimObject
   private:
   public:
     PARAMS(DataQueue);
+
     DataQueue(const Params &params);
+
     int pushBack();
+
     int popFront();
 };
 } // namespace gem5

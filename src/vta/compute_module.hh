@@ -25,6 +25,7 @@ class ComputeModule : public SimObject
 
   public:
     PARAMS(ComputeModule);
+
     ComputeModule(const Params &params);
 };
 } // namespace gem5

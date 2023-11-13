@@ -12,6 +12,7 @@ class LoadModule : public SimObject
 {
   private:
     InstructionQueue *loadCommandQueue;
+
     DataQueue *cmp2LdQueue;
     DataQueue *ld2CmpQueue;
 
@@ -20,6 +21,7 @@ class LoadModule : public SimObject
 
   public:
     PARAMS(LoadModule);
+
     LoadModule(const Params &params);
 };
 } // namespace gem5

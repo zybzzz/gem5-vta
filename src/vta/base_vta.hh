@@ -24,10 +24,12 @@ class BaseVTA : public SimObject
     int accumulator_buffer_size;
 
     EventFunctionWrapper begin_event;
+
     void processBeginEvent();
 
   public:
     PARAMS(BaseVTA);
+
     BaseVTA(const Params &params);
 
     virtual void startup() override;

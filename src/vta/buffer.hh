@@ -11,6 +11,7 @@ class Buffer : public SimObject
   private:
   public:
     PARAMS(Buffer);
+
     Buffer(const Params &params);
 };
 } // namespace gem5

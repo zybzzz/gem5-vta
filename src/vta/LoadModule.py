@@ -4,7 +4,6 @@ from m5.SimObject import SimObject
 
 class LoadModule(SimObject):
     type = "LoadModule"
-    abstract = False
     cxx_header = "vta/load_module.hh"
     cxx_class = "gem5::LoadModule"
 

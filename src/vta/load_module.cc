@@ -7,7 +7,7 @@ namespace gem5
 {
 LoadModule::LoadModule(const Params &params) :
     SimObject(params),
-    CoreModule(params.load_queue),
+    loadCommandQueue(params.load_command_queue),
     cmp2LdQueue(params.cmp2ld_queue),
     ld2CmpQueue(params.ld2cmp_queue),
     inputBuffer(params.input_buffer),

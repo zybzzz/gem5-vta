@@ -10,9 +10,9 @@ namespace gem5
 class InstructionFetchModule : public SimObject
 {
   private:
-    InstructionQueue *loadQueue;
-    InstructionQueue *computeQueue;
-    InstructionQueue *storeQueue;
+    InstructionQueue *loadCommandQueue;
+    InstructionQueue *computeCommandQueue;
+    InstructionQueue *storeCommandQueue;
 
   public:
     PARAMS(InstructionFetchModule);

@@ -8,7 +8,9 @@ class ComputeModule(SimObject):
     cxx_header = "vta/compute_module.hh"
     cxx_class = "gem5::ComputeModule"
 
-    compute_queue = Param.InstructionQueue(NULL, "compute instruction queue")
+    compute_command_queue = Param.InstructionQueue(
+        NULL, "compute command queue"
+    )
 
     cmp2st_queue = Param.DataQueue(
         NULL, "compute module to store module queue"

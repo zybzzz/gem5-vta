@@ -4,13 +4,14 @@
 #include "params/StoreModule.hh"
 #include "sim/sim_object.hh"
 #include "vta/buffer.hh"
-#include "vta/core_module.hh"
+#include "vta/instruction_queue.hh"
 
 namespace gem5
 {
-class StoreModule : public SimObject, public CoreModule
+class StoreModule : public SimObject
 {
   private:
+    InstructionQueue *storeCommandQueue;
     DataQueue *cmp2StQueue;
     DataQueue *st2CmpQueue;
 

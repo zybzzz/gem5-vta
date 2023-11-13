@@ -8,7 +8,7 @@ class LoadModule(SimObject):
     cxx_header = "vta/load_module.hh"
     cxx_class = "gem5::LoadModule"
 
-    load_queue = Param.InstructionQueue(NULL, "load instruction queue")
+    load_command_queue = Param.InstructionQueue(NULL, "load command queue")
 
     cmp2ld_queue = Param.DataQueue(NULL, "compute module to load module queue")
     ld2cmp_queue = Param.DataQueue(NULL, "load module to compute module queue")

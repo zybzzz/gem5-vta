@@ -7,7 +7,7 @@ class StoreModule(SimObject):
     cxx_header = "vta/store_module.hh"
     cxx_class = "gem5::StoreModule"
 
-    store_queue = Param.InstructionQueue(NULL, "store instruction queue")
+    store_command_queue = Param.InstructionQueue(NULL, "store command queue")
 
     cmp2st_queue = Param.DataQueue(
         NULL, "compute module to store module queue"

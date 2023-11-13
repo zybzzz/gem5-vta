@@ -4,14 +4,16 @@
 #include "params/ComputeModule.hh"
 #include "sim/sim_object.hh"
 #include "vta/buffer.hh"
-#include "vta/core_module.hh"
 #include "vta/data_queue.hh"
+#include "vta/instruction_queue.hh"
 
 namespace gem5
 {
-class ComputeModule : public SimObject, CoreModule
+class ComputeModule : public SimObject
 {
   private:
+    InstructionQueue *computeCommandQueue;
+
     DataQueue *cmp2StQueue;
     DataQueue *st2CmpQueue;
     DataQueue *cmp2LdQueue;

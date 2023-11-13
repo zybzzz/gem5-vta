@@ -56,15 +56,15 @@ class BaseVTA(SimObject):
         DataQueue(), "load module to compute module queue"
     )
 
-    ## instruction queues
+    ## command queues
     load_queue = Param.InstructionQueue(
-        InstructionQueue(), "load instruction queue"
+        InstructionQueue(), "load command queue"
     )
-    compute_queue = Param.InstructionQueue(
-        InstructionQueue(), "compute instruction queue"
+    compute_command_queue = Param.InstructionQueue(
+        InstructionQueue(), "compute command queue"
     )
     store_queue = Param.InstructionQueue(
-        InstructionQueue(), "store instruction queue"
+        InstructionQueue(), "store command queue"
     )
 
     ## regular module
@@ -82,11 +82,11 @@ class BaseVTA(SimObject):
     ########################## pass params to components ###########################
     # instruction fetch module
     instruction_fetch_module.load_queue = load_queue
-    instruction_fetch_module.compute_queue = compute_queue
+    instruction_fetch_module.compute_command_queue = compute_command_queue
     instruction_fetch_module.store_queue = store_queue
 
     # compute module
-    compute_module.compute_queue = compute_queue
+    compute_module.compute_command_queue = compute_command_queue
     compute_module.ld2cmp_queue = ld2cmp_queue
     compute_module.cmp2ld_queue = cmp2ld_queue
     compute_module.st2cmp_queue = st2cmp_queue

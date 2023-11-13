@@ -10,14 +10,16 @@ class InstructionFetchModule(SimObject):
     cxx_class = "gem5::InstructionFetchModule"
 
     # FIXME this will cause error, but I don't know why
-    # load_queue = Param.InstructionQueue("load instruction queue")
-    # compute_queue = Param.InstructionQueue("compute instruction queue")
-    # store_queue = Param.InstructionQueue("store instruction queue")
+    # load_command_queue = Param.InstructionQueue("load command queue")
+    # compute_command_queue = Param.InstructionQueue("compute command queue")
+    # store_command_queue = Param.InstructionQueue("store command queue")
 
     # The type must be the same as declared in the c++ file
-    load_queue = Param.InstructionQueue(NULL, "load instruction queue")
-    compute_queue = Param.InstructionQueue(NULL, "compute instruction queue")
-    store_queue = Param.InstructionQueue(NULL, "store instruction queue")
+    load_command_queue = Param.InstructionQueue(NULL, "load command queue")
+    compute_command_queue = Param.InstructionQueue(
+        NULL, "compute command queue"
+    )
+    store_command_queue = Param.InstructionQueue(NULL, "store command queue")
 
     # TODO connect to DRAM
 

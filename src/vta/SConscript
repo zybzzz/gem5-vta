@@ -9,11 +9,9 @@ SimObject("DataQueue.py", sim_objects=["DataQueue"])
 SimObject("LoadModule.py", sim_objects=["LoadModule"])
 SimObject("StoreModule.py", sim_objects=["StoreModule"])
 
-
 Source("base_vta.cc")
 Source("buffer.cc")
 Source("compute_module.cc")
-Source("core_module.cc")
 Source("data_queue.cc")
 Source("instruction_fetch_module.cc")
 Source("instruction_queue.cc")

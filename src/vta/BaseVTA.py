@@ -38,9 +38,9 @@ class BaseVTA(SimObject):
     ########################## the components of VTA ###############################
 
     ## buffers
-    input_buffer = Param.Buffer(Buffer(), "VTA inputbuffer")
-    weight_buffer = Param.Buffer(Buffer(), "VTA weightbuffer")
-    output_buffer = Param.Buffer(Buffer(), "VTA outputbuffer")
+    input_buffer = Param.Buffer(Buffer(), "VTA input buffer")
+    weight_buffer = Param.Buffer(Buffer(), "VTA weight buffer")
+    output_buffer = Param.Buffer(Buffer(), "VTA output buffer")
 
     ## data queues
     cmp2st_queue = Param.DataQueue(

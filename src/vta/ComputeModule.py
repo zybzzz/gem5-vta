@@ -21,9 +21,9 @@ class ComputeModule(SimObject):
     cmp2ld_queue = Param.DataQueue(NULL, "compute module to load module queue")
     ld2cmp_queue = Param.DataQueue(NULL, "load module to compute module queue")
 
-    input_buffer = Param.Buffer(NULL, "VTA inputbuffer")
-    weight_buffer = Param.Buffer(NULL, "VTA weightbuffer")
-    output_buffer = Param.Buffer(NULL, "VTA outputbuffer")
+    input_buffer = Param.Buffer(NULL, "VTA input buffer")
+    weight_buffer = Param.Buffer(NULL, "VTA weight buffer")
+    output_buffer = Param.Buffer(NULL, "VTA output buffer")
 
     # def __init__(self):
     #     super().__init__()

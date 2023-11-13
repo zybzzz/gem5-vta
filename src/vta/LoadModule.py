@@ -13,5 +13,5 @@ class LoadModule(SimObject):
     cmp2ld_queue = Param.DataQueue(NULL, "compute module to load module queue")
     ld2cmp_queue = Param.DataQueue(NULL, "load module to compute module queue")
 
-    input_buffer = Param.Buffer(NULL, "VTA inputbuffer")
-    weight_buffer = Param.Buffer(NULL, "VTA weightbuffer")
+    input_buffer = Param.Buffer(NULL, "VTA input buffer")
+    weight_buffer = Param.Buffer(NULL, "VTA weight buffer")

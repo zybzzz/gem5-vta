@@ -12,8 +12,8 @@ class InstructionQueue : public SimObject
   public:
     PARAMS(InstructionQueue);
     InstructionQueue(const Params &params);
-    virtual int pushBack();
-    virtual int popFront();
+    int pushBack();
+    int popFront();
 };
 } // namespace gem5
 

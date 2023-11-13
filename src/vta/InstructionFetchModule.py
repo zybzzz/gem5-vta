@@ -11,12 +11,12 @@ class InstructionFetchModule(SimObject):
 
     # FIXME this will cause error, but I don't know why
     # load_queue = Param.InstructionQueue("load instruction queue")
-    # computer_queue = Param.InstructionQueue("computer instruction queue")
+    # compute_queue = Param.InstructionQueue("compute instruction queue")
     # store_queue = Param.InstructionQueue("store instruction queue")
 
     # The type must be the same as declared in the c++ file
     load_queue = Param.InstructionQueue(NULL, "load instruction queue")
-    computer_queue = Param.InstructionQueue(NULL, "computer instruction queue")
+    compute_queue = Param.InstructionQueue(NULL, "compute instruction queue")
     store_queue = Param.InstructionQueue(NULL, "store instruction queue")
 
     # TODO connect to DRAM

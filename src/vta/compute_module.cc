@@ -1,12 +1,13 @@
-#include "vta/computer_module.hh"
+#include "vta/compute_module.hh"
+
 #include "base/trace.hh"
 #include "debug/BaseVTAFlag.hh"
 
 namespace gem5
 {
-ComputerModule::ComputerModule(const Params &params) :
+ComputeModule::ComputeModule(const Params &params) :
     SimObject(params),
-    CoreModule(params.computer_queue),
+    CoreModule(params.compute_queue),
     cmp2StQueue(params.cmp2st_queue),
     st2CmpQueue(params.st2cmp_queue),
     cmp2LdQueue(params.cmp2ld_queue),
@@ -15,6 +16,6 @@ ComputerModule::ComputerModule(const Params &params) :
     weightBuffer(params.weight_buffer),
     outputBuffer(params.output_buffer)
 {
-    DPRINTF(BaseVTAFlag, "create ComputerModule!\n");
+    DPRINTF(BaseVTAFlag, "create ComputeModule!\n");
 }
 } // namespace gem5

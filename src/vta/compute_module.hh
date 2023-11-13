@@ -1,7 +1,7 @@
-#ifndef COMPUTER_MODULE_HH
-#define COMPUTER_MODULE_HH
+#ifndef COMPUTE_MODULE_HH
+#define COMPUTE_MODULE_HH
 
-#include "params/ComputerModule.hh"
+#include "params/ComputeModule.hh"
 #include "sim/sim_object.hh"
 #include "vta/buffer.hh"
 #include "vta/core_module.hh"
@@ -9,7 +9,7 @@
 
 namespace gem5
 {
-class ComputerModule : public SimObject, CoreModule
+class ComputeModule : public SimObject, CoreModule
 {
   private:
     DataQueue *cmp2StQueue;
@@ -22,8 +22,8 @@ class ComputerModule : public SimObject, CoreModule
     Buffer *outputBuffer;
 
   public:
-    PARAMS(ComputerModule);
-    ComputerModule(const Params &params);
+    PARAMS(ComputeModule);
+    ComputeModule(const Params &params);
 };
 } // namespace gem5
 

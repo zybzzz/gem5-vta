@@ -1,7 +1,7 @@
 from m5.params import *
 from m5.SimObject import SimObject
 from m5.objects.Buffer import *
-from m5.objects.ComputerModule import *
+from m5.objects.ComputeModule import *
 from m5.objects.DataQueue import *
 from m5.objects.InstructionQueue import *
 from m5.objects.InstructionFetchModule import *
@@ -44,24 +44,24 @@ class BaseVTA(SimObject):
 
     ## data queues
     cmp2st_queue = Param.DataQueue(
-        DataQueue(), "computer module to store module queue"
+        DataQueue(), "compute module to store module queue"
     )
     st2cmp_queue = Param.DataQueue(
-        DataQueue(), "store module to computer module queue"
+        DataQueue(), "store module to compute module queue"
     )
     cmp2ld_queue = Param.DataQueue(
-        DataQueue(), "computer module to load module queue"
+        DataQueue(), "compute module to load module queue"
     )
     ld2cmp_queue = Param.DataQueue(
-        DataQueue(), "load module to computer module queue"
+        DataQueue(), "load module to compute module queue"
     )
 
     ## instruction queues
     load_queue = Param.InstructionQueue(
         InstructionQueue(), "load instruction queue"
     )
-    computer_queue = Param.InstructionQueue(
-        InstructionQueue(), "computer instruction queue"
+    compute_queue = Param.InstructionQueue(
+        InstructionQueue(), "compute instruction queue"
     )
     store_queue = Param.InstructionQueue(
         InstructionQueue(), "store instruction queue"
@@ -71,7 +71,7 @@ class BaseVTA(SimObject):
     instruction_fetch_module = Param.InstructionFetchModule(
         InstructionFetchModule(), "instruction fetch module"
     )
-    computer_module = Param.ComputerModule(ComputerModule(), "computer module")
+    compute_module = Param.ComputeModule(ComputeModule(), "compute module")
     load_module = Param.LoadModule(LoadModule(), "load module")
     store_module = Param.StoreModule(StoreModule(), "store module")
 
@@ -82,18 +82,18 @@ class BaseVTA(SimObject):
     ########################## pass params to components ###########################
     # instruction fetch module
     instruction_fetch_module.load_queue = load_queue
-    instruction_fetch_module.computer_queue = computer_queue
+    instruction_fetch_module.compute_queue = compute_queue
     instruction_fetch_module.store_queue = store_queue
 
-    # computer module
-    computer_module.computer_queue = computer_queue
-    computer_module.ld2cmp_queue = ld2cmp_queue
-    computer_module.cmp2ld_queue = cmp2ld_queue
-    computer_module.st2cmp_queue = st2cmp_queue
-    computer_module.cmp2st_queue = cmp2st_queue
-    computer_module.input_buffer = input_buffer
-    computer_module.weight_buffer = weight_buffer
-    computer_module.output_buffer = output_buffer
+    # compute module
+    compute_module.compute_queue = compute_queue
+    compute_module.ld2cmp_queue = ld2cmp_queue
+    compute_module.cmp2ld_queue = cmp2ld_queue
+    compute_module.st2cmp_queue = st2cmp_queue
+    compute_module.cmp2st_queue = cmp2st_queue
+    compute_module.input_buffer = input_buffer
+    compute_module.weight_buffer = weight_buffer
+    compute_module.output_buffer = output_buffer
 
     # load module
     load_module.load_queue = load_queue

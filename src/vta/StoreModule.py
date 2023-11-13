@@ -10,10 +10,10 @@ class StoreModule(SimObject):
     store_queue = Param.InstructionQueue(NULL, "store instruction queue")
 
     cmp2st_queue = Param.DataQueue(
-        NULL, "computer module to store module queue"
+        NULL, "compute module to store module queue"
     )
     st2cmp_queue = Param.DataQueue(
-        NULL, "store module to computer module queue"
+        NULL, "store module to compute module queue"
     )
 
     output_buffer = Param.Buffer(NULL, "VTA outputbuffer")

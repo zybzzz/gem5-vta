@@ -11,7 +11,7 @@ class InstructionFetchModule : public SimObject
 {
   private:
     InstructionQueue *loadQueue;
-    InstructionQueue *computerQueue;
+    InstructionQueue *computeQueue;
     InstructionQueue *storeQueue;
 
   public:

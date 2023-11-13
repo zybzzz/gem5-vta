@@ -1,7 +1,7 @@
 Import("*")
 
 SimObject("BaseVTA.py", sim_objects=["BaseVTA"])
-SimObject("ComputerModule.py", sim_objects=["ComputerModule"])
+SimObject("ComputeModule.py", sim_objects=["ComputeModule"])
 SimObject("InstructionFetchModule.py", sim_objects=["InstructionFetchModule"])
 SimObject("Buffer.py", sim_objects=["Buffer"])
 SimObject("InstructionQueue.py", sim_objects=["InstructionQueue"])
@@ -12,7 +12,7 @@ SimObject("StoreModule.py", sim_objects=["StoreModule"])
 
 Source("base_vta.cc")
 Source("buffer.cc")
-Source("computer_module.cc")
+Source("compute_module.cc")
 Source("core_module.cc")
 Source("data_queue.cc")
 Source("instruction_fetch_module.cc")

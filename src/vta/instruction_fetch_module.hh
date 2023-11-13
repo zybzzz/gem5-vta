@@ -3,19 +3,22 @@
 
 #include "params/InstructionFetchModule.hh"
 #include "sim/sim_object.hh"
-#include "vta/base_instruction_queue.hh"
+#include "vta/instruction_queue.hh"
 
 namespace gem5
 {
-    class InstructionFetchModule : public SimObject{
-        private:
-            BaseInstructionQueue *loadQueue;
-            BaseInstructionQueue *computerQueue;
-            BaseInstructionQueue *storeQueue;
-        public:
-            PARAMS(InstructionFetchModule);
-            InstructionFetchModule(const Params &params);
-    };
-}
+class InstructionFetchModule : public SimObject
+{
+  private:
+    InstructionQueue *loadCommandQueue;
+    InstructionQueue *computeCommandQueue;
+    InstructionQueue *storeCommandQueue;
+
+  public:
+    PARAMS(InstructionFetchModule);
+
+    InstructionFetchModule(const Params &params);
+};
+} // namespace gem5
 
 #endif

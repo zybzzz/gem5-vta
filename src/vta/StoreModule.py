@@ -1,15 +1,19 @@
 from m5.params import *
 from m5.SimObject import SimObject
 
+
 class StoreModule(SimObject):
     type = "StoreModule"
-    abstract = False
     cxx_header = "vta/store_module.hh"
     cxx_class = "gem5::StoreModule"
 
-    store_queue = Param.BaseInstructionQueue(NULL, "store instruction queue")
+    store_command_queue = Param.InstructionQueue(NULL, "store command queue")
 
-    cmp2st_queue = Param.CMP2STQueue(NULL, "computer module to store module queue")
-    st2cmp_queue = Param.ST2CMPQueue(NULL, "store module to computer module queue")
+    cmp2st_queue = Param.DataQueue(
+        NULL, "compute module to store module queue"
+    )
+    st2cmp_queue = Param.DataQueue(
+        NULL, "store module to compute module queue"
+    )
 
-    output_buffer = Param.OutputBuffer(NULL, "VTA outputbuffer")
+    output_buffer = Param.Buffer(NULL, "VTA output buffer")

@@ -3,7 +3,7 @@
 ```
 src/vta #main work directory
 ```
-python: 3.8  
+python: 3.8
 tvm vta: 0.15.dev0
 
 ## about make command
@@ -21,7 +21,7 @@ make clean # remove work directory
 5. When submitting a commit, you can't use too simple a description, which is not conducive to maintenance. You can download the commit plugin to help describe more detailed commit information.
 
 ## Common Error
-E: Can't find python installation.  
+E: Can't find python installation.
 A: Check your python environment. If your python installs correctly, delete the build directory and recompile.
 
 # The gem5 Simulator

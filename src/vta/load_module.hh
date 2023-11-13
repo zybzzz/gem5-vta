@@ -1,24 +1,29 @@
 #ifndef LOAD_MODULE_HH
 #define LOAD_MODULE_HH
 
-#include "vta/core_module.hh"
-#include "vta/buffers.hh"
 #include "params/LoadModule.hh"
 #include "sim/sim_object.hh"
+#include "vta/buffer.hh"
+#include "vta/instruction_queue.hh"
 
 namespace gem5
 {
-    class LoadModule : public SimObject, public CoreModule{
-        private:
-            CMP2LDQueue *cmp2LdQueue;
-            LD2CMPQueue *ld2CmpQueue;
+class LoadModule : public SimObject
+{
+  private:
+    InstructionQueue *loadCommandQueue;
 
-            InputBuffer *inputBuffer;
-            WeightBuffer *weightBuffer;
-        public:
-            PARAMS(LoadModule);
-            LoadModule(const Params &params);
-    };
-}
+    DataQueue *cmp2LdQueue;
+    DataQueue *ld2CmpQueue;
+
+    Buffer *inputBuffer;
+    Buffer *weightBuffer;
+
+  public:
+    PARAMS(LoadModule);
+
+    LoadModule(const Params &params);
+};
+} // namespace gem5
 
 #endif

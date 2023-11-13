@@ -9,26 +9,29 @@
 
 namespace gem5
 {
-    class InputBuffer : public BaseBuffer{
-        private:
-        public:
-            PARAMS(InputBuffer);
-            InputBuffer(const Params &params);
-    };
+class InputBuffer : public BaseBuffer
+{
+  private:
+  public:
+    PARAMS(InputBuffer);
+    InputBuffer(const Params &params);
+};
 
-    class WeightBuffer : public BaseBuffer{
-        private:
-        public:
-            PARAMS(WeightBuffer);
-            WeightBuffer(const Params &params);
-    };
+class WeightBuffer : public BaseBuffer
+{
+  private:
+  public:
+    PARAMS(WeightBuffer);
+    WeightBuffer(const Params &params);
+};
 
-    class OutputBuffer : public BaseBuffer{
-        private:
-        public:
-            PARAMS(OutputBuffer);
-            OutputBuffer(const Params &params);
-    };
-}
+class OutputBuffer : public BaseBuffer
+{
+  private:
+  public:
+    PARAMS(OutputBuffer);
+    OutputBuffer(const Params &params);
+};
+} // namespace gem5
 
 #endif

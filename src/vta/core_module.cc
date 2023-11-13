@@ -5,8 +5,9 @@
 
 namespace gem5
 {
-    CoreModule::CoreModule(BaseInstructionQueue *baseInstructionQueue):
-            baseInstructionQueue(baseInstructionQueue){
-        DPRINTF(BaseVTAFlag, "create baseInstructionQueue!\n");
-    }
+CoreModule::CoreModule(BaseInstructionQueue *baseInstructionQueue) :
+    baseInstructionQueue(baseInstructionQueue)
+{
+    DPRINTF(BaseVTAFlag, "create baseInstructionQueue!\n");
 }
+} // namespace gem5

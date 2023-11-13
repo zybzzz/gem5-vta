@@ -1,12 +1,31 @@
-
 Import("*")
 
 SimObject("BaseVTA.py", sim_objects=["BaseVTA"])
 SimObject("ComputerModule.py", sim_objects=["ComputerModule"])
 SimObject("InstructionFetchModule.py", sim_objects=["InstructionFetchModule"])
-SimObject("Buffers.py", sim_objects=["BaseBuffer", "InputBuffer", "WeightBuffer", "OutputBuffer"])
-SimObject("InstQueues.py", sim_objects=["BaseInstructionQueue", "LoadQueue", "ComputerQueue", "StoreQueue"])
-SimObject("DataQueues.py", sim_objects=["BaseDataQueue", "CMP2STQueue", "ST2CMPQueue", "CMP2LDQueue", "LD2CMPQueue"])
+SimObject(
+    "Buffers.py",
+    sim_objects=["BaseBuffer", "InputBuffer", "WeightBuffer", "OutputBuffer"],
+)
+SimObject(
+    "InstQueues.py",
+    sim_objects=[
+        "BaseInstructionQueue",
+        "LoadQueue",
+        "ComputerQueue",
+        "StoreQueue",
+    ],
+)
+SimObject(
+    "DataQueues.py",
+    sim_objects=[
+        "BaseDataQueue",
+        "CMP2STQueue",
+        "ST2CMPQueue",
+        "CMP2LDQueue",
+        "LD2CMPQueue",
+    ],
+)
 SimObject("LoadModule.py", sim_objects=["LoadModule"])
 SimObject("StoreModule.py", sim_objects=["StoreModule"])
 

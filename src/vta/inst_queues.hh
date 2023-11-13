@@ -6,29 +6,31 @@
 #include "params/ComputerQueue.hh"
 #include "params/StoreQueue.hh"
 
-
 namespace gem5
 {
-    class LoadQueue : public BaseInstructionQueue{
-        private:
-        public:
-            PARAMS(LoadQueue);
-            LoadQueue(const Params &params);
-    };
+class LoadQueue : public BaseInstructionQueue
+{
+  private:
+  public:
+    PARAMS(LoadQueue);
+    LoadQueue(const Params &params);
+};
 
-    class ComputerQueue : public BaseInstructionQueue{
-        private:
-        public:
-            PARAMS(ComputerQueue);
-            ComputerQueue(const Params &params);
-    };
+class ComputerQueue : public BaseInstructionQueue
+{
+  private:
+  public:
+    PARAMS(ComputerQueue);
+    ComputerQueue(const Params &params);
+};
 
-    class StoreQueue : public BaseInstructionQueue{
-        private:
-        public:
-            PARAMS(StoreQueue);
-            StoreQueue(const Params &params);
-    };
-}
+class StoreQueue : public BaseInstructionQueue
+{
+  private:
+  public:
+    PARAMS(StoreQueue);
+    StoreQueue(const Params &params);
+};
+} // namespace gem5
 
 #endif

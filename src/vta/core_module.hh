@@ -5,11 +5,12 @@
 
 namespace gem5
 {
-    class CoreModule{
-        private:
-        protected:
-            BaseInstructionQueue *baseInstructionQueue;
-            CoreModule(BaseInstructionQueue *baseInstructionQueue);
-    };
-}
+class CoreModule
+{
+  private:
+  protected:
+    BaseInstructionQueue *baseInstructionQueue;
+    CoreModule(BaseInstructionQueue *baseInstructionQueue);
+};
+} // namespace gem5
 #endif

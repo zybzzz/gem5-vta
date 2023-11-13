@@ -5,18 +5,21 @@
 
 namespace gem5
 {
-    BaseDataQueue::BaseDataQueue(const Params &params):
-            SimObject(params){
-        DPRINTF(BaseVTAFlag, "create BaseDataQueue!\n");
-    }
-
-    int BaseDataQueue::pushBack(){
-        return 0;
-    }
-
-    int BaseDataQueue::popFront(){
-        return 0;
-    }
-
-
+BaseDataQueue::BaseDataQueue(const Params &params) : SimObject(params)
+{
+    DPRINTF(BaseVTAFlag, "create BaseDataQueue!\n");
 }
+
+int
+BaseDataQueue::pushBack()
+{
+    return 0;
+}
+
+int
+BaseDataQueue::popFront()
+{
+    return 0;
+}
+
+} // namespace gem5

@@ -5,8 +5,8 @@
 
 namespace gem5
 {
-    BaseBuffer::BaseBuffer(const Params &params):
-            SimObject(params){
-        DPRINTF(BaseVTAFlag, "create BaseBuffer!\n");
-    }
+BaseBuffer::BaseBuffer(const Params &params) : SimObject(params)
+{
+    DPRINTF(BaseVTAFlag, "create BaseBuffer!\n");
 }
+} // namespace gem5

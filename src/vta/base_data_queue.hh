@@ -6,14 +6,15 @@
 
 namespace gem5
 {
-    class BaseDataQueue : public SimObject{
-        private:
-        public:
-            PARAMS(BaseDataQueue);
-            BaseDataQueue(const Params &params);
-            virtual int pushBack();
-            virtual int popFront();
-    };
-}
+class BaseDataQueue : public SimObject
+{
+  private:
+  public:
+    PARAMS(BaseDataQueue);
+    BaseDataQueue(const Params &params);
+    virtual int pushBack();
+    virtual int popFront();
+};
+} // namespace gem5
 
 #endif

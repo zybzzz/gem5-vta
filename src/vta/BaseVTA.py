@@ -21,7 +21,9 @@ class BaseVTA(SimObject):
     LOG_INP_WIDTH = Param.Int(0, "Input data type signed integer width.")
     LOG_WGT_WIDTH = Param.Int(0, "Weight data type signed integer width.")
     LOG_ACC_WIDTH = Param.Int(0, "Accumulator data type signed integer width.")
-    LOG_BATCH = Param.Int(0, "VTA matrix multiply intrinsic input/output dimension 0.")
+    LOG_BATCH = Param.Int(
+        0, "VTA matrix multiply intrinsic input/output dimension 0."
+    )
     LOG_BLOCK = Param.Int(0, "VTA matrix multiply inner dimensions.")
     LOG_UOP_BUFF_SIZE = Param.Int(0, "Micro-op on-chip buffer in Bytes.")
     LOG_INP_BUFF_SIZE = Param.Int(0, "Input on-chip buffer in Bytes.")
@@ -37,18 +39,30 @@ class BaseVTA(SimObject):
     output_buffer = Param.OutputBuffer(OutputBuffer(), "VTA outputbuffer")
 
     ## data queues
-    cmp2st_queue = Param.CMP2STQueue(CMP2STQueue(), "computer module to store module queue")
-    st2cmp_queue = Param.ST2CMPQueue(ST2CMPQueue(), "store module to computer module queue")
-    cmp2ld_queue = Param.CMP2LDQueue(CMP2LDQueue(), "computer module to load module queue")
-    ld2cmp_queue = Param.LD2CMPQueue(LD2CMPQueue(), "load module to computer module queue")
+    cmp2st_queue = Param.CMP2STQueue(
+        CMP2STQueue(), "computer module to store module queue"
+    )
+    st2cmp_queue = Param.ST2CMPQueue(
+        ST2CMPQueue(), "store module to computer module queue"
+    )
+    cmp2ld_queue = Param.CMP2LDQueue(
+        CMP2LDQueue(), "computer module to load module queue"
+    )
+    ld2cmp_queue = Param.LD2CMPQueue(
+        LD2CMPQueue(), "load module to computer module queue"
+    )
 
     ## instruction queues
     load_queue = Param.LoadQueue(LoadQueue(), "load instruction queue")
-    computer_queue = Param.ComputerQueue(ComputerQueue(), "computer instruction queue")
+    computer_queue = Param.ComputerQueue(
+        ComputerQueue(), "computer instruction queue"
+    )
     store_queue = Param.StoreQueue(StoreQueue(), "store instruction queue")
 
     ## regular module
-    instruction_fetch_module = Param.InstructionFetchModule(InstructionFetchModule(), "instruction fetch module")
+    instruction_fetch_module = Param.InstructionFetchModule(
+        InstructionFetchModule(), "instruction fetch module"
+    )
     computer_module = Param.ComputerModule(ComputerModule(), "computer module")
     load_module = Param.LoadModule(LoadModule(), "load module")
     store_module = Param.StoreModule(StoreModule(), "store module")
@@ -73,7 +87,6 @@ class BaseVTA(SimObject):
     computer_module.weight_buffer = weight_buffer
     computer_module.output_buffer = output_buffer
 
-
     # load module
     load_module.load_queue = load_queue
     load_module.cmp2ld_queue = cmp2ld_queue
@@ -87,16 +100,9 @@ class BaseVTA(SimObject):
     store_module.st2cmp_queue = st2cmp_queue
     store_module.output_buffer = output_buffer
 
-
-
-
-
     ################################################################################
     ################################################################################
-
-
 
     # def __init__(self, **kwargs):
     #     super().__init__(**kwargs)
     #     pass
-

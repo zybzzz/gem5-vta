@@ -9,20 +9,22 @@
 
 namespace gem5
 {
-    class ComputerModule : public SimObject, CoreModule{
-        private:
-            CMP2STQueue *cmp2StQueue;
-            ST2CMPQueue *st2CmpQueue;
-            CMP2LDQueue *cmp2LdQueue;
-            LD2CMPQueue *ld2CmpQueue;
+class ComputerModule : public SimObject, CoreModule
+{
+  private:
+    CMP2STQueue *cmp2StQueue;
+    ST2CMPQueue *st2CmpQueue;
+    CMP2LDQueue *cmp2LdQueue;
+    LD2CMPQueue *ld2CmpQueue;
 
-            InputBuffer *inputBuffer;
-            WeightBuffer *weightBuffer;
-            OutputBuffer *outputBuffer;
-        public:
-            PARAMS(ComputerModule);
-            ComputerModule(const Params &params);
-        };
-}
+    InputBuffer *inputBuffer;
+    WeightBuffer *weightBuffer;
+    OutputBuffer *outputBuffer;
+
+  public:
+    PARAMS(ComputerModule);
+    ComputerModule(const Params &params);
+};
+} // namespace gem5
 
 #endif

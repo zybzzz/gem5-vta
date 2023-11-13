@@ -8,17 +8,19 @@
 
 namespace gem5
 {
-    class LoadModule : public SimObject, public CoreModule{
-        private:
-            CMP2LDQueue *cmp2LdQueue;
-            LD2CMPQueue *ld2CmpQueue;
+class LoadModule : public SimObject, public CoreModule
+{
+  private:
+    CMP2LDQueue *cmp2LdQueue;
+    LD2CMPQueue *ld2CmpQueue;
 
-            InputBuffer *inputBuffer;
-            WeightBuffer *weightBuffer;
-        public:
-            PARAMS(LoadModule);
-            LoadModule(const Params &params);
-    };
-}
+    InputBuffer *inputBuffer;
+    WeightBuffer *weightBuffer;
+
+  public:
+    PARAMS(LoadModule);
+    LoadModule(const Params &params);
+};
+} // namespace gem5
 
 #endif

@@ -8,16 +8,18 @@
 
 namespace gem5
 {
-    class StoreModule: public SimObject, public CoreModule{
-        private:
-            CMP2STQueue *cmp2StQueue;
-            ST2CMPQueue *st2CmpQueue;
+class StoreModule : public SimObject, public CoreModule
+{
+  private:
+    CMP2STQueue *cmp2StQueue;
+    ST2CMPQueue *st2CmpQueue;
 
-            OutputBuffer *outputBuffer;
-        public:
-            PARAMS(StoreModule);
-            StoreModule(const Params &params);
-    };
-}
+    OutputBuffer *outputBuffer;
+
+  public:
+    PARAMS(StoreModule);
+    StoreModule(const Params &params);
+};
+} // namespace gem5
 
 #endif

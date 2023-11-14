@@ -14,7 +14,7 @@ BaseVTA::BaseVTA(const Params &params) :
     accumulator_data_width(1 << params.log_accumulator_width),
     batch_size(1 << params.log_batch),
     block_size(1 << params.log_block),
-    uop_buffer_size(1 << params.log_micro_op_buff_size),
+    micro_op_buffer_size(1 << params.log_micro_op_buff_size),
     input_buffer_size(1 << params.log_input_buff_size),
     weight_buffer_size(1 << params.log_weight_buff_size),
     accumulator_buffer_size(1 << params.log_accumulator_buff_size)
@@ -30,7 +30,7 @@ BaseVTA::BaseVTA(const Params &params) :
         BaseVTAFlag, "accumulator_data_width: %10d\n", accumulator_data_width);
     DPRINTF(BaseVTAFlag, "batch_size: %10d\n", batch_size);
     DPRINTF(BaseVTAFlag, "block_size: %10d\n", block_size);
-    DPRINTF(BaseVTAFlag, "uop_buffer_size: %10d\n", uop_buffer_size);
+    DPRINTF(BaseVTAFlag, "micro_op_buffer_size: %10d\n", micro_op_buffer_size);
     DPRINTF(BaseVTAFlag, "input_buffer_size: %10d\n", input_buffer_size);
     DPRINTF(BaseVTAFlag, "weight_buffer_size: %10d\n", weight_buffer_size);
     DPRINTF(BaseVTAFlag, "accumulator_buffer_size: %10d\n",

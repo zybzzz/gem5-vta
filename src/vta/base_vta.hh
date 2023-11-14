@@ -18,7 +18,7 @@ class BaseVTA : public SimObject
     int accumulator_data_width;
     int batch_size;
     int block_size;
-    int uop_buffer_size;
+    int micro_op_buffer_size;
     int input_buffer_size;
     int weight_buffer_size;
     int accumulator_buffer_size;

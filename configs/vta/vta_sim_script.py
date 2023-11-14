@@ -5,6 +5,15 @@ from m5.objects import *
 root = Root(full_system=False)
 root.vta = BaseVTA()
 
+root.membus = SystemXBar()
+
+# Create a DDR4 memory controller and connect it to the membus
+root.mem_ctrl = MemCtrl()
+root.mem_ctrl.dram = DDR4_2400_4x16()
+root.mem_ctrl.dram.range = AddrRange("2GB")
+root.mem.ctrl.port = root.membus.mem_side_ports
+root.system_port = root.membus.cpu_side_ports
+
 root.vta.hardware_version = "0.0.2"
 root.vta.log_input_width = 3
 root.vta.log_wight_width = 3
@@ -16,6 +25,9 @@ root.vta.log_input_buff_size = 15
 root.vta.log_weight_buff_size = 18
 root.vta.log_accumulator_buff_size = 17
 
+root.vta.instruction_port = root.membus.cpu_side_ports
+root.vta.micro_op_port = root.membus.cpu_side_ports
+root.vta.data_port = root.membus.cpu_side_ports
 
 m5.instantiate()
 

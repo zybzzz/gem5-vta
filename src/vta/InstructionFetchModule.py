@@ -5,7 +5,6 @@ from m5.objects.InstructionQueue import *
 
 class InstructionFetchModule(SimObject):
     type = "InstructionFetchModule"
-    abstract = False
     cxx_header = "vta/instruction_fetch_module.hh"
     cxx_class = "gem5::InstructionFetchModule"
 

@@ -11,7 +11,6 @@ from m5.objects.StoreModule import *
 
 class BaseVTA(SimObject):
     type = "BaseVTA"
-    abstract = False
     cxx_header = "vta/base_vta.hh"
     cxx_class = "gem5::BaseVTA"
 
@@ -38,9 +37,9 @@ class BaseVTA(SimObject):
     ########################## the components of VTA ###############################
 
     ## buffers
-    input_buffer = Param.Buffer(Buffer(), "VTA input buffer")
-    weight_buffer = Param.Buffer(Buffer(), "VTA weight buffer")
-    output_buffer = Param.Buffer(Buffer(), "VTA output buffer")
+    input_buffer = Param.Buffer(Buffer(), "VTA inputbuffer")
+    weight_buffer = Param.Buffer(Buffer(), "VTA weightbuffer")
+    output_buffer = Param.Buffer(Buffer(), "VTA outputbuffer")
 
     ## data queues
     cmp2st_queue = Param.DataQueue(

@@ -11,18 +11,6 @@ namespace gem5
 class BaseVTA : public SimObject
 {
   private:
-    // VTA configs
-    std::string hardware_version;
-    int input_data_width;
-    int weight_data_width;
-    int accumulator_data_width;
-    int batch_size;
-    int block_size;
-    int micro_op_buffer_size;
-    int input_buffer_size;
-    int weight_buffer_size;
-    int accumulator_buffer_size;
-
     EventFunctionWrapper begin_event;
 
     void processBeginEvent();

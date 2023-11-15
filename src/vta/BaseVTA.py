@@ -16,24 +16,6 @@ class BaseVTA(SimObject):
 
     # VTA configs
     # reference at https://tvm.apache.org/docs/topic/vta/dev/config.html#parameters-overview
-    hardware_version = Param.String("0.0.1", "VTA hardware version number.")
-    log_input_width = Param.Int(0, "Input data type signed integer width.")
-    log_weight_width = Param.Int(0, "Weight data type signed integer width.")
-    log_accumulator_width = Param.Int(
-        0, "Accumulator data type signed integer width."
-    )
-    log_batch = Param.Int(
-        0, "VTA matrix multiply intrinsic input/output dimension 0."
-    )
-    log_block = Param.Int(0, "VTA matrix multiply inner dimensions.")
-    log_micro_op_buffer_size = Param.Int(
-        0, "Micro-op on-chip buffer in Bytes."
-    )
-    log_input_buffer_size = Param.Int(0, "Input on-chip buffer in Bytes.")
-    log_weight_buffer_size = Param.Int(0, "Weight on-chip buffer in Bytes.")
-    log_accumulator_buffer_size = Param.Int(
-        0, "Accumulator on-chip buffer in Bytes."
-    )
 
     ################################################################################
     ########################## the components of VTA ###############################

@@ -15,15 +15,6 @@ root.mem.ctrl.port = root.membus.mem_side_ports
 root.system_port = root.membus.cpu_side_ports
 
 root.vta.hardware_version = "0.0.2"
-root.vta.log_input_width = 3
-root.vta.log_weight_width = 3
-root.vta.log_accumulator_width = 5
-root.vta.log_batch = 0
-root.vta.log_block = 4
-root.vta.log_micro_op_buffer_size = 15
-root.vta.log_input_buffer_size = 15
-root.vta.log_weight_buffer_size = 18
-root.vta.log_accumulator_buffer_size = 17
 
 root.vta.instruction_port = root.membus.cpu_side_ports
 root.vta.micro_op_port = root.membus.cpu_side_ports

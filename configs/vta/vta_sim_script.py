@@ -16,7 +16,7 @@ root.system_port = root.membus.cpu_side_ports
 
 root.vta.hardware_version = "0.0.2"
 root.vta.log_input_width = 3
-root.vta.log_wight_width = 3
+root.vta.log_weight_width = 3
 root.vta.log_accumulator_width = 5
 root.vta.log_batch = 0
 root.vta.log_block = 4

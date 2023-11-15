@@ -18,7 +18,7 @@ class BaseVTA(SimObject):
     # reference at https://tvm.apache.org/docs/topic/vta/dev/config.html#parameters-overview
     hardware_version = Param.String("0.0.1", "VTA hardware version number.")
     log_input_width = Param.Int(0, "Input data type signed integer width.")
-    log_wight_width = Param.Int(0, "Weight data type signed integer width.")
+    log_weight_width = Param.Int(0, "Weight data type signed integer width.")
     log_accumulator_width = Param.Int(
         0, "Accumulator data type signed integer width."
     )

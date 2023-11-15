@@ -6,28 +6,12 @@
 namespace gem5
 {
 InstructionQueue::InstructionQueue(const Params &params) :
-    ClockedObject(params), queue(params.queue_size), latency(params.latency)
+    ClockedObject(params),
+    queue(params.queue_size),
+    readLatency(params.read_latency),
+    writeLatency(params.write_latency)
 {
     DPRINTF(BaseVTAFlag, "create InstructionQueue!\n");
-}
-
-VTAInstruction *&
-InstructionQueue::front()
-{
-    return queue.front();
-}
-
-void
-InstructionQueue::pushBack(VTAInstruction *instruction)
-{
-    // TODO Perform delay-related operations
-    queue.push_back(instruction);
-}
-
-void
-InstructionQueue::popFront()
-{
-    queue.pop_front();
 }
 
 } // namespace gem5

@@ -8,4 +8,5 @@ class InstructionQueue(ClockedObject):
     cxx_class = "gem5::InstructionQueue"
 
     queue_size = Param.Int(32, "length of the queue")
-    latency = Param.Latency("1ns", "latency of the queue")
+    read_latency = Param.Latency("1ns", "latency of reading the queue")
+    write_latency = Param.Latency("1ns", "latency of writing the queue")

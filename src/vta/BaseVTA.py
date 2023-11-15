@@ -26,10 +26,12 @@ class BaseVTA(SimObject):
         0, "VTA matrix multiply intrinsic input/output dimension 0."
     )
     log_block = Param.Int(0, "VTA matrix multiply inner dimensions.")
-    log_micro_op_buff_size = Param.Int(0, "Micro-op on-chip buffer in Bytes.")
-    log_input_buff_size = Param.Int(0, "Input on-chip buffer in Bytes.")
-    log_weight_buff_size = Param.Int(0, "Weight on-chip buffer in Bytes.")
-    log_accumulator_buff_size = Param.Int(
+    log_micro_op_buffer_size = Param.Int(
+        0, "Micro-op on-chip buffer in Bytes."
+    )
+    log_input_buffer_size = Param.Int(0, "Input on-chip buffer in Bytes.")
+    log_weight_buffer_size = Param.Int(0, "Weight on-chip buffer in Bytes.")
+    log_accumulator_buffer_size = Param.Int(
         0, "Accumulator on-chip buffer in Bytes."
     )
 

@@ -14,10 +14,10 @@ class ComputeModule : public SimObject
   private:
     InstructionQueue *computeCommandQueue;
 
-    DataQueue *cmp2StQueue;
-    DataQueue *st2CmpQueue;
-    DataQueue *cmp2LdQueue;
-    DataQueue *ld2CmpQueue;
+    DataQueue *computeToStoreQueue;
+    DataQueue *storeToComputeQueue;
+    DataQueue *computeToLoadQueue;
+    DataQueue *loadToComputeQueue;
 
     Buffer *inputBuffer;
     Buffer *weightBuffer;

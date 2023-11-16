@@ -13,8 +13,8 @@ class LoadModule : public SimObject
   private:
     InstructionQueue *loadCommandQueue;
 
-    DataQueue *cmp2LdQueue;
-    DataQueue *ld2CmpQueue;
+    DataQueue *computeToLoadQueue;
+    DataQueue *loadToComputeQueue;
 
     Buffer *inputBuffer;
     Buffer *weightBuffer;

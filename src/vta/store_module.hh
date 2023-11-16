@@ -13,8 +13,8 @@ class StoreModule : public SimObject
   private:
     InstructionQueue *storeCommandQueue;
 
-    DataQueue *cmp2StQueue;
-    DataQueue *st2CmpQueue;
+    DataQueue *computeToStoreQueue;
+    DataQueue *storeToComputeQueue;
 
     Buffer *outputBuffer;
 

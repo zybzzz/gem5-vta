@@ -9,10 +9,10 @@ class StoreModule(SimObject):
 
     store_command_queue = Param.InstructionQueue(NULL, "store command queue")
 
-    cmp2st_queue = Param.DataQueue(
+    compute_to_store_queue = Param.DataQueue(
         NULL, "compute module to store module queue"
     )
-    st2cmp_queue = Param.DataQueue(
+    store_to_compute_queue = Param.DataQueue(
         NULL, "store module to compute module queue"
     )
 

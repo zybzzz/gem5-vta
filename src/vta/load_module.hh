@@ -9,6 +9,8 @@ class LoadModule
 {
   private:
     friend class BaseVTA;
+    BaseVTA *vta;
+
     InstructionQueue *loadCommandQueue;
 
     DataQueue *computeToLoadQueue;
@@ -18,7 +20,7 @@ class LoadModule
     Buffer *weightBuffer;
 
   public:
-    LoadModule();
+    LoadModule(BaseVTA *vta);
 };
 } // namespace gem5
 

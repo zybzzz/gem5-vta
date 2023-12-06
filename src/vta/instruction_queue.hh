@@ -3,6 +3,7 @@
 
 #include "base/circular_queue.hh"
 #include "base/types.hh"
+#include "vta/communciation/queue_port.hh"
 #include "vta/vta.hh"
 #include "vta/vta_forward_declaration.hh"
 
@@ -12,15 +13,21 @@ class InstructionQueue
 {
   private:
     friend class BaseVTA;
+    BaseVTA *vta;
 
     using Instruction = vta::Instruction;
     CircularQueue<Instruction *> queue;
     Tick readLatency;
     Tick writeLatency;
 
+    class PushSidePort : public vta::QueuePushPort<Instruction *>
+    {};
+
+    PushSidePort pushSidePort;
+
   public:
-    InstructionQueue();
-    InstructionQueue(Tick readLatency, Tick writeLatency);
+    InstructionQueue(BaseVTA *vta);
+    InstructionQueue(BaseVTA *vta, Tick readLatency, Tick writeLatency);
 
     size_t
     size() const

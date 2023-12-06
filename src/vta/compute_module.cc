@@ -5,7 +5,7 @@
 
 namespace gem5
 {
-ComputeModule::ComputeModule()
+ComputeModule::ComputeModule(BaseVTA *vta) : vta(vta)
 {
     DPRINTF(BaseVTAFlag, "create ComputeModule!\n");
 }

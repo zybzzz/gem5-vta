@@ -5,7 +5,7 @@
 
 namespace gem5
 {
-InstructionFetchModule::InstructionFetchModule()
+InstructionFetchModule::InstructionFetchModule(BaseVTA *vta) : vta(vta)
 {
     DPRINTF(BaseVTAFlag, "create InstructionFetchModule!\n");
 }

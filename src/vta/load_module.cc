@@ -5,5 +5,8 @@
 
 namespace gem5
 {
-LoadModule::LoadModule() { DPRINTF(BaseVTAFlag, "create LoadModule!\n"); }
+LoadModule::LoadModule(BaseVTA *vta) : vta(vta)
+{
+    DPRINTF(BaseVTAFlag, "create LoadModule!\n");
+}
 } // namespace gem5

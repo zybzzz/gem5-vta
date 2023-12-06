@@ -5,5 +5,8 @@
 
 namespace gem5
 {
-StoreModule::StoreModule() { DPRINTF(BaseVTAFlag, "create StoreModule!\n"); }
+StoreModule::StoreModule(BaseVTA *vta) : vta(vta)
+{
+    DPRINTF(BaseVTAFlag, "create StoreModule!\n");
+}
 } // namespace gem5

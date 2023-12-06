@@ -5,5 +5,8 @@
 
 namespace gem5
 {
-Buffer::Buffer() { DPRINTF(BaseVTAFlag, "create Buffer!\n"); }
+Buffer::Buffer(BaseVTA *vta) : vta(vta)
+{
+    DPRINTF(BaseVTAFlag, "create Buffer!\n");
+}
 } // namespace gem5

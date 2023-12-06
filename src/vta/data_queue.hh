@@ -9,9 +9,10 @@ class DataQueue
 {
   private:
     friend class BaseVTA;
+    BaseVTA *vta;
 
   public:
-    DataQueue();
+    DataQueue(BaseVTA *vta);
 
     int pushBack();
 

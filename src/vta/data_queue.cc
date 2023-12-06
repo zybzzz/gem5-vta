@@ -5,7 +5,10 @@
 
 namespace gem5
 {
-DataQueue::DataQueue() { DPRINTF(BaseVTAFlag, "create DataQueue!\n"); }
+DataQueue::DataQueue(BaseVTA *vta) : vta(vta)
+{
+    DPRINTF(BaseVTAFlag, "create DataQueue!\n");
+}
 
 int
 DataQueue::pushBack()

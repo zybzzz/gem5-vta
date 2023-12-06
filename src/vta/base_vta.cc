@@ -15,20 +15,20 @@ namespace gem5
 BaseVTA::BaseVTA(const Params &params) :
     SimObject(params),
     begin_event([this] { processBeginEvent(); }, name() + ".beginEvent"),
-    inputBuffer(new Buffer()),
-    weightBuffer(new Buffer()),
-    outputBuffer(new Buffer()),
-    computeToStoreQueue(new DataQueue()),
-    storeToComputeQueue(new DataQueue()),
-    computeToLoadQueue(new DataQueue()),
-    loadToComputeQueue(new DataQueue()),
-    loadQueue(new InstructionQueue()),
-    computeCommandQueue(new InstructionQueue()),
-    storeQueue(new InstructionQueue()),
-    instructionFetchModule(new InstructionFetchModule),
-    computeModule(new ComputeModule()),
-    loadModule(new LoadModule()),
-    storeModule(new StoreModule())
+    inputBuffer(new Buffer(this)),
+    weightBuffer(new Buffer(this)),
+    outputBuffer(new Buffer(this)),
+    computeToStoreQueue(new DataQueue(this)),
+    storeToComputeQueue(new DataQueue(this)),
+    computeToLoadQueue(new DataQueue(this)),
+    loadToComputeQueue(new DataQueue(this)),
+    loadQueue(new InstructionQueue(this)),
+    computeCommandQueue(new InstructionQueue(this)),
+    storeQueue(new InstructionQueue(this)),
+    instructionFetchModule(new InstructionFetchModule(this)),
+    computeModule(new ComputeModule(this)),
+    loadModule(new LoadModule(this)),
+    storeModule(new StoreModule(this))
 {
     DPRINTF(BaseVTAFlag, "===========================================\n");
     DPRINTF(BaseVTAFlag, "initializing gem5-vta ... user configuration "

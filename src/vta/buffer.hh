@@ -9,9 +9,10 @@ class Buffer
 {
   private:
     friend class BaseVTA;
+    BaseVTA *vta;
 
   public:
-    Buffer();
+    Buffer(BaseVTA *vta);
 };
 } // namespace gem5
 

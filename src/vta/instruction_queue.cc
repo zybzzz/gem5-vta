@@ -5,12 +5,13 @@
 
 namespace gem5
 {
-InstructionQueue::InstructionQueue()
+InstructionQueue::InstructionQueue(BaseVTA *vta) : vta(vta)
 {
     DPRINTF(BaseVTAFlag, "create InstructionQueue!\n");
 }
 
-InstructionQueue::InstructionQueue(Tick readLatency, Tick writeLatency) :
-    readLatency(readLatency), writeLatency(writeLatency)
+InstructionQueue::InstructionQueue(
+    BaseVTA *vta, Tick readLatency, Tick writeLatency) :
+    vta(vta), readLatency(readLatency), writeLatency(writeLatency)
 {}
 } // namespace gem5

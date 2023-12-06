@@ -9,6 +9,8 @@ class StoreModule
 {
   private:
     friend class BaseVTA;
+    BaseVTA *vta;
+
     InstructionQueue *storeCommandQueue;
 
     DataQueue *computeToStoreQueue;
@@ -17,7 +19,7 @@ class StoreModule
     Buffer *outputBuffer;
 
   public:
-    StoreModule();
+    StoreModule(BaseVTA *vta);
 };
 } // namespace gem5
 

@@ -9,12 +9,14 @@ class InstructionFetchModule
 {
   private:
     friend class BaseVTA;
+    BaseVTA *vta;
+
     InstructionQueue *loadCommandQueue;
     InstructionQueue *computeCommandQueue;
     InstructionQueue *storeCommandQueue;
 
   public:
-    InstructionFetchModule();
+    InstructionFetchModule(BaseVTA *vta);
 };
 } // namespace gem5
 

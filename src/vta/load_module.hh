@@ -1,16 +1,14 @@
 #ifndef LOAD_MODULE_HH
 #define LOAD_MODULE_HH
 
-#include "params/LoadModule.hh"
-#include "sim/sim_object.hh"
-#include "vta/buffer.hh"
-#include "vta/instruction_queue.hh"
+#include "vta/vta_forward_declaration.hh"
 
 namespace gem5
 {
-class LoadModule : public SimObject
+class LoadModule
 {
   private:
+    friend class BaseVTA;
     InstructionQueue *loadCommandQueue;
 
     DataQueue *computeToLoadQueue;
@@ -20,9 +18,7 @@ class LoadModule : public SimObject
     Buffer *weightBuffer;
 
   public:
-    PARAMS(LoadModule);
-
-    LoadModule(const Params &params);
+    LoadModule();
 };
 } // namespace gem5
 

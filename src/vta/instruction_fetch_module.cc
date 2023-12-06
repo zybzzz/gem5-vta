@@ -5,11 +5,7 @@
 
 namespace gem5
 {
-InstructionFetchModule::InstructionFetchModule(const Params &params) :
-    SimObject(params),
-    loadCommandQueue(params.load_command_queue),
-    computeCommandQueue(params.compute_command_queue),
-    storeCommandQueue(params.store_command_queue)
+InstructionFetchModule::InstructionFetchModule()
 {
     DPRINTF(BaseVTAFlag, "create InstructionFetchModule!\n");
 }

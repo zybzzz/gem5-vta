@@ -1,23 +1,20 @@
 #ifndef INSTRUCTION_FETCH_MODULE_HH
 #define INSTRUCTION_FETCH_MODULE_HH
 
-#include "params/InstructionFetchModule.hh"
-#include "sim/sim_object.hh"
-#include "vta/instruction_queue.hh"
+#include "vta/vta_forward_declaration.hh"
 
 namespace gem5
 {
-class InstructionFetchModule : public SimObject
+class InstructionFetchModule
 {
   private:
+    friend class BaseVTA;
     InstructionQueue *loadCommandQueue;
     InstructionQueue *computeCommandQueue;
     InstructionQueue *storeCommandQueue;
 
   public:
-    PARAMS(InstructionFetchModule);
-
-    InstructionFetchModule(const Params &params);
+    InstructionFetchModule();
 };
 } // namespace gem5
 

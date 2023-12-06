@@ -1,18 +1,17 @@
 #ifndef DATA_QUEUE_HH
 #define DATA_QUEUE_HH
 
-#include "params/DataQueue.hh"
-#include "sim/sim_object.hh"
+#include "vta/vta_forward_declaration.hh"
 
 namespace gem5
 {
-class DataQueue : public SimObject
+class DataQueue
 {
   private:
-  public:
-    PARAMS(DataQueue);
+    friend class BaseVTA;
 
-    DataQueue(const Params &params);
+  public:
+    DataQueue();
 
     int pushBack();
 

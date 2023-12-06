@@ -5,10 +5,7 @@
 
 namespace gem5
 {
-DataQueue::DataQueue(const Params &params) : SimObject(params)
-{
-    DPRINTF(BaseVTAFlag, "create DataQueue!\n");
-}
+DataQueue::DataQueue() { DPRINTF(BaseVTAFlag, "create DataQueue!\n"); }
 
 int
 DataQueue::pushBack()

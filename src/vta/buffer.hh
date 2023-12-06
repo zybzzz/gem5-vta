@@ -1,18 +1,17 @@
 #ifndef BUFFER_HH
 #define BUFFER_HH
 
-#include "params/Buffer.hh"
-#include "sim/sim_object.hh"
+#include "vta/vta_forward_declaration.hh"
 
 namespace gem5
 {
-class Buffer : public SimObject
+class Buffer
 {
   private:
-  public:
-    PARAMS(Buffer);
+    friend class BaseVTA;
 
-    Buffer(const Params &params);
+  public:
+    Buffer();
 };
 } // namespace gem5
 

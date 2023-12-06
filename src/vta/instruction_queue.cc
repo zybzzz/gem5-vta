@@ -5,13 +5,12 @@
 
 namespace gem5
 {
-InstructionQueue::InstructionQueue(const Params &params) :
-    ClockedObject(params),
-    queue(params.queue_size),
-    readLatency(params.read_latency),
-    writeLatency(params.write_latency)
+InstructionQueue::InstructionQueue()
 {
     DPRINTF(BaseVTAFlag, "create InstructionQueue!\n");
 }
 
+InstructionQueue::InstructionQueue(Tick readLatency, Tick writeLatency) :
+    readLatency(readLatency), writeLatency(writeLatency)
+{}
 } // namespace gem5

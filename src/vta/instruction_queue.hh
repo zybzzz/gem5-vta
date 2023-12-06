@@ -2,23 +2,25 @@
 #define INSTRUCTION_QUEUE_HH
 
 #include "base/circular_queue.hh"
-#include "params/InstructionQueue.hh"
-#include "sim/clocked_object.hh"
-#include "vta/base/vta_instruction.hh"
+#include "base/types.hh"
+#include "vta/vta.hh"
+#include "vta/vta_forward_declaration.hh"
 
 namespace gem5
 {
-class InstructionQueue : public ClockedObject
+class InstructionQueue
 {
   private:
-    CircularQueue<VTAInstruction *> queue;
+    friend class BaseVTA;
+
+    using Instruction = vta::Instruction;
+    CircularQueue<Instruction *> queue;
     Tick readLatency;
     Tick writeLatency;
 
   public:
-    PARAMS(InstructionQueue);
-
-    InstructionQueue(const Params &params);
+    InstructionQueue();
+    InstructionQueue(Tick readLatency, Tick writeLatency);
 
     size_t
     size() const
@@ -41,12 +43,12 @@ class InstructionQueue : public ClockedObject
         return !queue.full();
     }
     void
-    pushBack(VTAInstruction *instruction)
+    pushBack(Instruction *instruction)
     {
         queue.push_back(instruction);
     }
     void
-    popFront(VTAInstruction *&instruction)
+    popFront(Instruction *&instruction)
     {
         instruction = queue.front();
         queue.pop_front();
@@ -60,7 +62,7 @@ class InstructionQueue : public ClockedObject
      * @return Return latency or 0.
      */
     Tick
-    tryReadFromQueue(VTAInstruction *&instruction)
+    tryReadFromQueue(Instruction *&instruction)
     {
         if (canReadFromQueue()) {
             popFront(instruction);
@@ -77,7 +79,7 @@ class InstructionQueue : public ClockedObject
      * @return Return latency or 0.
      */
     Tick
-    tryWriteToQueue(VTAInstruction *instruction)
+    tryWriteToQueue(Instruction *instruction)
     {
         if (canWriteToQueue()) {
             pushBack(instruction);

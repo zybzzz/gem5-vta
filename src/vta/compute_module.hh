@@ -1,17 +1,14 @@
 #ifndef COMPUTE_MODULE_HH
 #define COMPUTE_MODULE_HH
 
-#include "params/ComputeModule.hh"
-#include "sim/sim_object.hh"
-#include "vta/buffer.hh"
-#include "vta/data_queue.hh"
-#include "vta/instruction_queue.hh"
+#include "vta/vta_forward_declaration.hh"
 
 namespace gem5
 {
-class ComputeModule : public SimObject
+class ComputeModule
 {
   private:
+    friend class BaseVTA;
     InstructionQueue *computeCommandQueue;
 
     DataQueue *computeToStoreQueue;
@@ -24,9 +21,7 @@ class ComputeModule : public SimObject
     Buffer *outputBuffer;
 
   public:
-    PARAMS(ComputeModule);
-
-    ComputeModule(const Params &params);
+    ComputeModule();
 };
 } // namespace gem5
 

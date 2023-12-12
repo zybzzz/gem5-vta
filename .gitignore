@@ -33,3 +33,6 @@ configs/dram/lowp_sweep.cfg
 .pyenv
 .vscode
 .idea
+*.out
+cmake-build-debug
+CMakeLists.txt

@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 cpus = ["Host CPU", "Atomic CPU", "Timing CPU", "O3CPU"]
 
 # 第一张图的数据
-run_times_ns = [684904, 6651198, 12225086, 2384781]
+run_times_ns = [329476, 6651198, 12225086, 2384781]
 # 将纳秒转换为毫秒以便于展示
 run_times_ms = [time / 1000000 for time in run_times_ns]
 

@@ -5,10 +5,13 @@
 #include <cstdint>
 
 #include "vta/bit_cast.hh"
+#include "vta/stream.hh"
 #include "vta/vta_const.hh"
+#include "vta/vta_hw_config.hh"
 
 namespace vta
 {
+
 struct Instruction
 {
     std::array<uint8_t, INSTRUCTION_WIDTH> data;
@@ -139,6 +142,19 @@ struct Instruction
         return *this;
     }
 };
+
+using BusType = std::array<uint8_t, BUS_WIDTH / 8>;
+
+using CommandQueue = Stream<Instruction, STREAM_IN_DEPTH>;
+using DependencyQueue = Stream<Instruction, STREAM_IN_DEPTH>;
+
+using InputBuffer =
+    std::array<std::array<BusType, INPUT_MATRIX_RATIO>, INPUT_BUFFER_DEPTH>;
+using WeightBuffer =
+    std::array<std::array<BusType, WEIGHT_MATRIX_RATIO>, WEIGHT_BUFFER_DEPTH>;
+using OutputBuffer =
+    std::array<std::array<BusType, OUTPUT_MATRIX_RATIO>, OUTPUT_BUFFER_DEPTH>;
+
 } // namespace vta
 
 #endif

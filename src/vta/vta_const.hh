@@ -9,6 +9,7 @@
 
 namespace vta
 {
+
 // Memory buf width
 constexpr size_t BUS_WIDTH{1 << LOG_BUS_WIDTH};
 
@@ -127,6 +128,7 @@ enum class MemoryId : uint8_t
     OUTPUT = 4,
     ACCUMULATOR_8BIT = 5,
 };
+
 } // namespace vta
 
 #endif

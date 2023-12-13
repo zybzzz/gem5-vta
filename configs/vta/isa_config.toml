@@ -1,0 +1,9 @@
+log_input_width = 3
+log_weight_width = 3
+log_accumulate_width = 5
+log_batch = 0
+log_block = 4
+log_micro_op_buf_size = 15
+log_input_buf_size = 15
+log_weight_buf_size = 18
+log_accumulate_buf_size = 17

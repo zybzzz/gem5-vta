@@ -11,8 +11,7 @@ root.membus = SystemXBar()
 root.mem_ctrl = MemCtrl()
 root.mem_ctrl.dram = DDR4_2400_4x16()
 root.mem_ctrl.dram.range = AddrRange("2GB")
-root.mem.ctrl.port = root.membus.mem_side_ports
-root.system_port = root.membus.cpu_side_ports
+root.mem_ctrl.port = root.membus.mem_side_ports
 
 root.vta.hardware_version = "0.0.2"
 

@@ -32,18 +32,18 @@ class L2Cache(Cache):
     response_latency = 5
     mshrs = 20
     tgts_per_mshr = 12
-    write_buffers = 8
+    write_buffers = 16
 
 
 class L3Cache(Cache):
     size = "2MB"
     assoc = 16
-    tag_latency = 10
-    data_latency = 46
-    response_latency = 10
+    tag_latency = 7
+    data_latency = 7
+    response_latency = 7
     mshrs = 32
     tgts_per_mshr = 20
-    write_buffers = 16
+    write_buffers = 32
 
 
 class L3XBar(L2XBar):

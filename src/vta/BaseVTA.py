@@ -14,6 +14,10 @@ class BaseVTA(SimObject):
     cxx_header = "vta/base_vta.hh"
     cxx_class = "gem5::BaseVTA"
 
+    instruction_port = RequestPort("instruction port")
+    micro_op_port = RequestPort("micro_op port")
+    data_port = RequestPort("data port")
+
     # VTA configs
     # reference at https://tvm.apache.org/docs/topic/vta/dev/config.html#parameters-overview
 

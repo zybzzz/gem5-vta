@@ -1,23 +1,27 @@
 import m5
 from m5.objects import *
 
-# All SimObject initialization functions under the root tree will be called
-root = Root(full_system=False)
-root.vta = BaseVTA()
+system = System()
 
-root.membus = SystemXBar()
+system.clk_domain = SrcClockDomain()
+system.clk_domain.clock = "1GHz"
+system.clk_domain.voltage_domain = VoltageDomain()
 
-# Create a DDR4 memory controller and connect it to the membus
-root.mem_ctrl = MemCtrl()
-root.mem_ctrl.dram = DDR4_2400_4x16()
-root.mem_ctrl.dram.range = AddrRange("2GB")
-root.mem_ctrl.port = root.membus.mem_side_ports
+system.membus = SystemXBar()
+system.mem_ranges = [AddrRange("2GB")]
+system.mem_ctrl = MemCtrl()
+system.mem_ctrl.dram = DDR4_2400_4x16()
+system.mem_ctrl.dram.range = system.mem_ranges[0]
+system.mem_ctrl.port = system.membus.mem_side_ports
+system.system_port = system.membus.cpu_side_ports
 
-root.vta.hardware_version = "0.0.2"
+vta = BaseVTA()
 
-root.vta.instruction_port = root.membus.cpu_side_ports
-root.vta.micro_op_port = root.membus.cpu_side_ports
-root.vta.data_port = root.membus.cpu_side_ports
+vta.instruction_port = system.membus.cpu_side_ports
+vta.micro_op_port = system.membus.cpu_side_ports
+vta.data_port = system.membus.cpu_side_ports
+
+root = Root(full_system=False, system=system, vta=vta)
 
 m5.instantiate()
 

@@ -6,7 +6,7 @@
 
 #include "vta/tick_struct.hh"
 
-namespace gem5
+namespace vta
 {
 
 template <typename T, size_t N>
@@ -55,6 +55,6 @@ class Stream
     }
 };
 
-} // namespace gem5
+} // namespace vta
 
 #endif

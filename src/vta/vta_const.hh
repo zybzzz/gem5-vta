@@ -78,6 +78,8 @@ constexpr size_t LOG_ACCUMULATOR_BUFFER_DEPTH{LOG_ACCUMULATOR_BUFFER_SIZE -
                                               LOG_BATCH - LOG_BLOCK_OUT -
                                               LOG_ACCUMULATOR_WIDTH + 3};
 constexpr size_t ACCUMULATOR_BUFFER_DEPTH{1 << LOG_ACCUMULATOR_BUFFER_DEPTH};
+constexpr size_t LOG_OUTPUT_BUFFER_DEPTH{LOG_INPUT_BUFFER_DEPTH};
+constexpr size_t OUTPUT_BUFFER_DEPTH{1 << LOG_OUTPUT_BUFFER_DEPTH};
 
 // Opcode
 constexpr size_t OPCODE_BIT_WIDTH{3};

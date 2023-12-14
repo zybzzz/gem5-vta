@@ -1,19 +1,19 @@
 #include "base/types.hh"
 
-namespace gem5
+namespace vta
 {
 
 template <typename T = void>
 struct TickStruct
 {
-    Tick time;
+    gem5::Tick time;
     T value;
 };
 
 template <>
 struct TickStruct<void>
 {
-    Tick time;
+    gem5::Tick time;
 };
 
-} // namespace gem5
+} // namespace vta

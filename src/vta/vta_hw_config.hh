@@ -1,5 +1,5 @@
-#ifndef VTA_CONST_HH
-#define VTA_CONST_HH
+#ifndef VTA_HW_CONFIG_HH
+#define VTA_HW_CONFIG_HH
 
 #include <cstddef>
 

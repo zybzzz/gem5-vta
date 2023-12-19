@@ -5,10 +5,13 @@
 #include <cstdint>
 
 #include "vta/bit_cast.hh"
+#include "vta/stream.hh"
 #include "vta/vta_const.hh"
+#include "vta/vta_hw_config.hh"
 
 namespace vta
 {
+
 struct Instruction
 {
     std::array<uint8_t, INSTRUCTION_WIDTH> data;
@@ -34,6 +37,11 @@ struct Instruction
         uint64_t x_pad_1 : MEM_OP_PAD_BIT_WIDTH;
         uint64_t : 64 - 2 * MEM_OP_SIZE_BIT_WIDTH - MEM_OP_STRIDE_BIT_WIDTH -
             4 * MEM_OP_PAD_BIT_WIDTH;
+
+        operator Instruction() const noexcept
+        {
+            return bit_cast<Instruction>(*this);
+        }
     };
 
     struct GemmInstruction
@@ -58,6 +66,11 @@ struct Instruction
         uint64_t weight_factor_out : LOG_WEIGHT_BUFFER_DEPTH;
         uint64_t : 64 - 2 * LOG_ACCUMULATOR_BUFFER_DEPTH -
             2 * LOG_INPUT_BUFFER_DEPTH - 2 * LOG_WEIGHT_BUFFER_DEPTH;
+
+        operator Instruction() const noexcept
+        {
+            return bit_cast<Instruction>(*this);
+        }
     };
 
     struct AluInstruction
@@ -83,7 +96,27 @@ struct Instruction
         int64_t imm : ALU_OP_IMMEDIATE_BIT_WIDTH;
         uint64_t : 64 - 4 * LOG_ACCUMULATOR_BUFFER_DEPTH -
             ALU_OPCODE_BIT_WIDTH - 1 - ALU_OP_IMMEDIATE_BIT_WIDTH;
+
+        operator Instruction() const noexcept
+        {
+            return bit_cast<Instruction>(*this);
+        }
     };
+
+    operator MemoryInstruction() const noexcept
+    {
+        return bit_cast<MemoryInstruction>(*this);
+    }
+
+    operator GemmInstruction() const noexcept
+    {
+        return bit_cast<GemmInstruction>(*this);
+    }
+
+    operator AluInstruction() const noexcept
+    {
+        return bit_cast<AluInstruction>(*this);
+    }
 
     auto
     opcode() const noexcept -> Opcode
@@ -92,23 +125,36 @@ struct Instruction
     }
 
     auto
-    as_memory() const noexcept -> MemoryInstruction
+    asMemoryInstruction() const noexcept -> MemoryInstruction
     {
-        return bit_cast<MemoryInstruction>(*this);
+        return *this;
     }
 
     auto
-    as_gemm() const noexcept -> GemmInstruction
+    asGemmInstruction() const noexcept -> GemmInstruction
     {
-        return bit_cast<GemmInstruction>(*this);
+        return *this;
     }
 
     auto
-    as_alu() const noexcept -> AluInstruction
+    asAluInstruction() const noexcept -> AluInstruction
     {
-        return bit_cast<AluInstruction>(*this);
+        return *this;
     }
 };
+
+using BusType = std::array<uint8_t, BUS_WIDTH / 8>;
+
+using CommandQueue = Stream<Instruction, STREAM_IN_DEPTH>;
+using DependencyQueue = Stream<Instruction, STREAM_IN_DEPTH>;
+
+using InputBuffer =
+    std::array<std::array<BusType, INPUT_MATRIX_RATIO>, INPUT_BUFFER_DEPTH>;
+using WeightBuffer =
+    std::array<std::array<BusType, WEIGHT_MATRIX_RATIO>, WEIGHT_BUFFER_DEPTH>;
+using OutputBuffer =
+    std::array<std::array<BusType, OUTPUT_MATRIX_RATIO>, OUTPUT_BUFFER_DEPTH>;
+
 } // namespace vta
 
 #endif

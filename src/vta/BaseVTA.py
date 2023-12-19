@@ -14,6 +14,10 @@ class BaseVTA(SimObject):
     cxx_header = "vta/base_vta.hh"
     cxx_class = "gem5::BaseVTA"
 
+    instruction_port = RequestPort("instruction port")
+    micro_op_port = RequestPort("micro_op port")
+    data_port = RequestPort("data port")
+
     # VTA configs
     # reference at https://tvm.apache.org/docs/topic/vta/dev/config.html#parameters-overview
 
@@ -21,9 +25,9 @@ class BaseVTA(SimObject):
     ########################## the components of VTA ###############################
 
     ## buffers
-    input_buffer = Param.Buffer(Buffer(), "VTA inputbuffer")
-    weight_buffer = Param.Buffer(Buffer(), "VTA weightbuffer")
-    output_buffer = Param.Buffer(Buffer(), "VTA outputbuffer")
+    input_buffer = Param.Buffer(Buffer(), "VTA input buffer")
+    weight_buffer = Param.Buffer(Buffer(), "VTA weight buffer")
+    output_buffer = Param.Buffer(Buffer(), "VTA output buffer")
 
     ## data queues
     compute_to_store_queue = Param.DataQueue(
@@ -58,11 +62,6 @@ class BaseVTA(SimObject):
     load_module = Param.LoadModule(LoadModule(), "load module")
     store_module = Param.StoreModule(StoreModule(), "store module")
 
-    ################################################################################
-    ################################################################################
-
-    ################################################################################
-    ########################## pass params to components ###########################
     # instruction fetch module
     instruction_fetch_module.load_queue = load_queue
     instruction_fetch_module.compute_command_queue = compute_command_queue
@@ -90,10 +89,3 @@ class BaseVTA(SimObject):
     store_module.compute_to_store_queue = compute_to_store_queue
     store_module.store_to_compute_queue = store_to_compute_queue
     store_module.output_buffer = output_buffer
-
-    ################################################################################
-    ################################################################################
-
-    # def __init__(self, **kwargs):
-    #     super().__init__(**kwargs)
-    #     pass

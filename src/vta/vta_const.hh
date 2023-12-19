@@ -5,9 +5,14 @@
 #include <cstdint>
 
 #include "vta/vta_config.hh"
+#include "vta/vta_hw_config.hh"
 
 namespace vta
 {
+
+// Memory buf width
+constexpr size_t BUS_WIDTH{1 << LOG_BUS_WIDTH};
+
 // Instruction width and size
 constexpr size_t LOG_INSTRUCTION_WIDTH{7};
 constexpr size_t INSTRUCTION_WIDTH{1 << LOG_INSTRUCTION_WIDTH};
@@ -28,7 +33,6 @@ constexpr size_t OUTPUT_WIDTH{1 << LOG_OUTPUT_WIDTH};
 constexpr size_t BATCH{1 << LOG_BATCH};
 
 // Block
-
 constexpr size_t LOG_BLOCK_IN{LOG_BLOCK};
 constexpr size_t LOG_BLOCK_OUT{LOG_BLOCK};
 constexpr size_t BLOCK_INPUT{1 << LOG_BLOCK_IN};
@@ -45,6 +49,13 @@ constexpr size_t ACCUMULATOR_MATRIX_WIDTH{
 constexpr size_t ACCUMULATOR_MATRIX_SIZE{ACCUMULATOR_MATRIX_WIDTH / 8};
 constexpr size_t OUTPUT_MATRIX_WIDTH{OUTPUT_WIDTH * BATCH * BLOCK_OUTPUT};
 constexpr size_t OUTPUT_MATRIX_SIZE{OUTPUT_MATRIX_WIDTH / 8};
+
+// Ratio between matrix width and bus width
+constexpr size_t INPUT_MATRIX_RATIO{INPUT_MATRIX_WIDTH / BUS_WIDTH};
+constexpr size_t WEIGHT_MATRIX_RATIO{WEIGHT_MATRIX_WIDTH / BUS_WIDTH};
+constexpr size_t ACCUMULATOR_MATRIX_RATIO{
+    ACCUMULATOR_MATRIX_WIDTH / BUS_WIDTH};
+constexpr size_t OUTPUT_MATRIX_RATIO{OUTPUT_MATRIX_WIDTH / BUS_WIDTH};
 
 // Buffer size
 constexpr size_t MICRO_OP_BUFFER_SIZE{1 << LOG_MICRO_OP_BUFFER_SIZE};
@@ -67,6 +78,8 @@ constexpr size_t LOG_ACCUMULATOR_BUFFER_DEPTH{LOG_ACCUMULATOR_BUFFER_SIZE -
                                               LOG_BATCH - LOG_BLOCK_OUT -
                                               LOG_ACCUMULATOR_WIDTH + 3};
 constexpr size_t ACCUMULATOR_BUFFER_DEPTH{1 << LOG_ACCUMULATOR_BUFFER_DEPTH};
+constexpr size_t LOG_OUTPUT_BUFFER_DEPTH{LOG_INPUT_BUFFER_DEPTH};
+constexpr size_t OUTPUT_BUFFER_DEPTH{1 << LOG_OUTPUT_BUFFER_DEPTH};
 
 // Opcode
 constexpr size_t OPCODE_BIT_WIDTH{3};
@@ -117,6 +130,7 @@ enum class MemoryId : uint8_t
     OUTPUT = 4,
     ACCUMULATOR_8BIT = 5,
 };
+
 } // namespace vta
 
 #endif

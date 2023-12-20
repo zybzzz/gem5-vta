@@ -34,3 +34,5 @@ configs/dram/lowp_sweep.cfg
 .vscode
 .idea
 .cache
+cmake-build-debug
+CMakeLists.txt

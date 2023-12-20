@@ -5,8 +5,7 @@
 
 namespace gem5
 {
-InstructionQueue::InstructionQueue(const Params &params) :
-    SimObject(params)
+InstructionQueue::InstructionQueue(const Params &params) : SimObject(params)
 {
     DPRINTF(BaseVTAFlag, "create InstructionQueue!\n");
 }
@@ -17,10 +16,10 @@ InstructionQueue::pushBack()
     return 0;
 }
 
-int
-InstructionQueue::popFront()
+auto
+InstructionQueue::popFront() -> vta::Instruction *
 {
-    return 0;
+    return nullptr;
 }
 
 } // namespace gem5

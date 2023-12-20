@@ -19,6 +19,13 @@ enum class Status
     DcacheWaitSwitch,
 };
 
-}
+enum class StoreModuleStatus
+{
+    Normal,
+    WaitToRead,
+    WaitToWrite,
+};
+
+} // namespace gem5
 
 #endif

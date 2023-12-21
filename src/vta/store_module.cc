@@ -24,13 +24,14 @@ StoreModule::StoreModuleWorkingEvent::process() -> void
                 if (storeModule->computeToStoreQueue->tryPop()) {
                     storeModule->status = StoreModuleStatus::Normal;
                 } else {
+                    storeModule->reschedule(this, curTick() + 1);
                     return;
                 }
             }
 
             break;
         case StoreModuleStatus::Normal:
-            // do memcpy
+            // do memcpy then change to WaitToWrite
             break;
         case StoreModuleStatus::WaitToWrite:
             if (/*insn.push_prev_dep*/ true)
@@ -39,6 +40,7 @@ StoreModule::StoreModuleWorkingEvent::process() -> void
                     // free instruction
                 } else {
                     storeModule->status = StoreModuleStatus::WaitToWrite;
+                    storeModule->reschedule(this, curTick() + 1);
                 }
             break;
         }
@@ -56,28 +58,6 @@ StoreModule::StoreModule(const Params &params) :
 
 {
     DPRINTF(BaseVTAFlag, "create StoreModule!\n");
-}
-
-auto
-StoreModule::notifyRead() -> void
-{
-    if (status == StoreModuleStatus::WaitToRead) {
-        status = StoreModuleStatus::Normal;
-        // schedule
-        reschedule(workingEvent, curTick());
-    } else {
-    }
-}
-
-auto
-StoreModule::notifyWrite() -> void
-{
-    if (status == StoreModuleStatus::WaitToWrite) {
-        status = StoreModuleStatus::Normal;
-        // schedule
-        reschedule(workingEvent, curTick());
-    } else {
-    }
 }
 
 } // namespace gem5

@@ -26,6 +26,20 @@ enum class StoreModuleStatus
     WaitToWrite,
 };
 
+enum class LoadModuleStatus
+{
+    Normal,
+    WaitToRead,
+    WaitToWrite,
+};
+
+enum class ComputeModuleStatus
+{
+    Normal,
+    WaitToRead,
+    WaitToWrite,
+};
+
 } // namespace gem5
 
 #endif

@@ -15,7 +15,6 @@ namespace gem5
 class StoreModule : public SimObject
 {
   private:
-    using StoreModuleStatus = gem5::StoreModuleStatus;
     InstructionQueue *storeCommandQueue;
 
     DataQueue *computeToStoreQueue;
@@ -43,10 +42,6 @@ class StoreModule : public SimObject
     PARAMS(StoreModule);
 
     StoreModule(const Params &params);
-
-    auto notifyRead() -> void;
-
-    auto notifyWrite() -> void;
 };
 } // namespace gem5
 

@@ -19,7 +19,7 @@ LoadModule::LoadModuleWorkingEvent::process() -> void
             if (loadModule->instruction == nullptr) {
                 // get instruction from queue
             }
-            if (/*insn.pop_prev_dep*/ true) {
+            if (loadModule->instruction->pop_next_dependence) {
                 if (loadModule->computeToLoadQueue->tryPop()) {
                     loadModule->status = LoadModuleStatus::Normal;
                 } else {
@@ -33,7 +33,7 @@ LoadModule::LoadModuleWorkingEvent::process() -> void
             // judge and do load
             break;
         case LoadModuleStatus::WaitToWrite:
-            if (/*insn.push_prev_dep*/ true)
+            if (loadModule->instruction->push_next_dependence)
                 if (loadModule->loadToComputeQueue->tryPush()) {
                     loadModule->status = LoadModuleStatus::WaitToRead;
                     // free instruction

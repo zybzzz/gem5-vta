@@ -144,7 +144,7 @@ struct Instruction
 
     enum class InstructionType
     {
-        None, // indicate union is nullptr
+        None, // indicate ComputeModule union is nullptr
         MemoryInstruction,
         GemmInstruction,
         AluInstruction,

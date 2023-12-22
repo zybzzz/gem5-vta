@@ -32,24 +32,27 @@ ComputeModule::ComputeModuleWorkingEvent::process() -> void
         case ComputeModuleStatus::WaitToRead:
             if (computeModule->instructionType ==
                 vta::Instruction::InstructionType::None) {
-                // get instruction from queue
+                // get instruction from queue and set the type
             }
 
-            if (/*insn.pop_prev_dep*/ true && !loadToComputeQueueReadFlag) {
-                if (computeModule->loadToComputeQueue->tryPop()) {
-                    loadToComputeQueueReadFlag = true;
-                } else {
-                    computeModule->reschedule(this, curTick() + 1);
-                    return;
+            if (computeModule->instruction.memoryInstruction
+                    ->pop_next_dependence) {
+                if (!loadToComputeQueueReadFlag) {
+                    if (computeModule->loadToComputeQueue->tryPop()) {
+                        loadToComputeQueueReadFlag = true;
+                    } else {
+                        computeModule->reschedule(this, curTick() + 1);
+                        return;
+                    }
                 }
-            }
-            if (/*insn.pop_prev_dep*/ true && !storeToComputeQueueReadFlag) {
-                if (computeModule->computeToStoreQueue->tryPop()) {
-                    storeToComputeQueueReadFlag = true;
-                    computeModule->status = ComputeModuleStatus::Normal;
-                } else {
-                    computeModule->reschedule(this, curTick() + 1);
-                    return;
+                if (!storeToComputeQueueReadFlag) {
+                    if (computeModule->computeToStoreQueue->tryPop()) {
+                        storeToComputeQueueReadFlag = true;
+                        computeModule->status = ComputeModuleStatus::Normal;
+                    } else {
+                        computeModule->reschedule(this, curTick() + 1);
+                        return;
+                    }
                 }
             }
 
@@ -70,27 +73,32 @@ ComputeModule::ComputeModuleWorkingEvent::process() -> void
             }
             break;
         case ComputeModuleStatus::WaitToWrite:
-            if (/*insn.push_prev_dep*/ true && !computeToLoadQueueWriteFlag) {
-                if (computeModule->storeToComputeQueue->tryPush()) {
-                    computeToLoadQueueWriteFlag = true;
-                    // free instruction
-                } else {
-                    computeModule->status = ComputeModuleStatus::WaitToWrite;
-                    computeModule->reschedule(this, curTick() + 1);
+            if (computeModule->instruction.memoryInstruction
+                    ->push_next_dependence) {
+                if (!computeToLoadQueueWriteFlag) {
+                    if (computeModule->storeToComputeQueue->tryPush()) {
+                        computeToLoadQueueWriteFlag = true;
+                        // free instruction
+                    } else {
+                        computeModule->status =
+                            ComputeModuleStatus::WaitToWrite;
+                        computeModule->reschedule(this, curTick() + 1);
+                    }
+                }
+
+                if (!computeToStoreQueueWriteFlag) {
+                    if (computeModule->storeToComputeQueue->tryPush()) {
+                        computeToStoreQueueWriteFlag = true;
+                        computeModule->status =
+                            ComputeModuleStatus::WaitToRead;
+                        // free instruction
+                    } else {
+                        computeModule->status =
+                            ComputeModuleStatus::WaitToWrite;
+                        computeModule->reschedule(this, curTick() + 1);
+                    }
                 }
             }
-
-            if (/*insn.push_prev_dep*/ true && !computeToStoreQueueWriteFlag) {
-                if (computeModule->storeToComputeQueue->tryPush()) {
-                    computeToStoreQueueWriteFlag = true;
-                    computeModule->status = ComputeModuleStatus::WaitToRead;
-                    // free instruction
-                } else {
-                    computeModule->status = ComputeModuleStatus::WaitToWrite;
-                    computeModule->reschedule(this, curTick() + 1);
-                }
-            }
-
             clearFlag();
             break;
         }

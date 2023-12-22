@@ -20,7 +20,7 @@ StoreModule::StoreModuleWorkingEvent::process() -> void
             if (storeModule->instruction == nullptr) {
                 // get instruction from queue
             }
-            if (/*insn.pop_prev_dep*/ true) {
+            if (storeModule->instruction->pop_next_dependence) {
                 if (storeModule->computeToStoreQueue->tryPop()) {
                     storeModule->status = StoreModuleStatus::Normal;
                 } else {
@@ -34,7 +34,7 @@ StoreModule::StoreModuleWorkingEvent::process() -> void
             // do memcpy then change to WaitToWrite
             break;
         case StoreModuleStatus::WaitToWrite:
-            if (/*insn.push_prev_dep*/ true)
+            if (storeModule->instruction->push_next_dependence)
                 if (storeModule->storeToComputeQueue->tryPush()) {
                     storeModule->status = StoreModuleStatus::WaitToRead;
                     // free instruction

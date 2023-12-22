@@ -22,4 +22,16 @@ DataQueue::popFront()
     return 0;
 }
 
+auto
+DataQueue::tryPush() -> bool
+{
+    return false;
+}
+
+auto
+DataQueue::tryPop() -> bool
+{
+    return false;
+}
+
 } // namespace gem5

@@ -141,6 +141,14 @@ struct Instruction
     {
         return *this;
     }
+
+    enum class InstructionType
+    {
+        None, // indicate ComputeModule union is nullptr
+        MemoryInstruction,
+        GemmInstruction,
+        AluInstruction,
+    };
 };
 
 using BusType = std::array<uint8_t, BUS_WIDTH / 8>;

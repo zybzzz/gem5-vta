@@ -3,6 +3,7 @@
 
 #include "params/InstructionQueue.hh"
 #include "sim/sim_object.hh"
+#include "vta/vta.hh"
 
 namespace gem5
 {
@@ -16,7 +17,14 @@ class InstructionQueue : public SimObject
 
     int pushBack();
 
-    int popFront();
+    auto popFront() -> vta::Instruction *;
+
+    auto
+    empty() const noexcept -> bool
+    {
+        // TODO
+        return false;
+    };
 };
 } // namespace gem5
 

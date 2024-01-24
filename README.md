@@ -1,28 +1,91 @@
 # gem5-vta
-## work directories and environment
-```
-src/vta #main work directory
-```
-python: 3.8
-tvm vta: 0.15.dev0
 
-## about make command
+## Working directories and environment
+
 ```
-make vta #compile
-make run #run the script
-make clean # remove work directory
+src/vta         # main work directory, all modeling files are in this directory
+configs/vta     # The vta script and configuration files are in this directory
 ```
 
-## Tips
+**python version 3.8 and tvm-vta version is 0.15.dev0.**
+
+## Compile and run
+
+to compile:
+
+```shell
+scons build/NULL/gem5.opt -j 8
+```
+
+to run:
+
+```shell
+build/NULL/gem5.opt configs/vta/vta_sim_script.py
+```
+
+## Tips for this git repository
+
 1. The working directory is listed above, if you add a new working directory, please change the README and raise pr.
-2. **Use English throughout the project, whether adding comments or commits.**
+2. **Please use English throughout the project, whether you are submitting a commit or adding comments to a file,
+   otherwise encoding errors will result.**
 3. When making changes to the project, do so on your own branch. If you are done, you can raise pr.
 4. Use github issue for discussion.
-5. When submitting a commit, you can't use too simple a description, which is not conducive to maintenance. You can download the commit plugin to help describe more detailed commit information.
+5. When submitting a commit, it must conform to the rules for writing commit messages proposed by the gem5 project.
 
-## Common Error
+## Common error And solution
+
 E: Can't find python installation.
 A: Check your python environment. If your python installs correctly, delete the build directory and recompile.
+
+## Project development phase
+
+research related papers(done) -> vta basic module modeling(done) -> modeling for correctness(active) -> optimize
+modeling accuracy
+
+## Script examples and what gem5-vta is doing now
+
+```python
+# reference to configs/vta/vta_sim_script.py
+import m5
+from m5.objects import *
+
+############################################################
+####define XBar and port to communicate with vta model######
+
+system = System()
+
+system.clk_domain = SrcClockDomain()
+system.clk_domain.clock = "1GHz"
+system.clk_domain.voltage_domain = VoltageDomain()
+
+system.membus = SystemXBar()
+system.mem_ranges = [AddrRange("2GB")]
+system.mem_ctrl = MemCtrl()
+system.mem_ctrl.dram = DDR4_2400_4x16()
+system.mem_ctrl.dram.range = system.mem_ranges[0]
+system.mem_ctrl.port = system.membus.mem_side_ports
+system.system_port = system.membus.cpu_side_ports
+
+############################################################
+
+vta = BaseVTA()  # create vta model
+
+vta.instruction_port = system.membus.cpu_side_ports
+vta.micro_op_port = system.membus.cpu_side_ports
+vta.data_port = system.membus.cpu_side_ports
+
+root = Root(full_system=False, system=system, vta=vta)
+
+m5.instantiate()
+
+print("Beginning Simulation")
+exit_event = m5.simulate()
+print(f"Exiting @ tick {m5.curTick()} because {exit_event.getCause()}")
+
+```
+
+Our current work is still modeling the modules of vta and modeling correctness. Current work does not yet involve
+interaction with the host side.
 
 # The gem5 Simulator
 
@@ -71,7 +134,8 @@ The main source tree includes these subdirectories:
 * ext: less-common external packages needed to build gem5
 * include: include files for use in other programs
 * site_scons: modular components of the build system
-* src: source code of the gem5 simulator. The C++ source, Python wrappers, and Python standard library are found in this directory.
+* src: source code of the gem5 simulator. The C++ source, Python wrappers, and Python standard library are found in this
+  directory.
 * system: source for some optional system software for simulated systems
 * tests: regression tests
 * util: useful utility programs and files
@@ -93,21 +157,21 @@ bugs, requests features, or engage in community discussions. Below
 are a few of the most common we recommend using.
 
 * **GitHub Discussions**: A GitHub Discussions page. This can be used to start
-discussions or ask questions. Available at
-<https://github.com/orgs/gem5/discussions>.
+  discussions or ask questions. Available at
+  <https://github.com/orgs/gem5/discussions>.
 * **GitHub Issues**: A GitHub Issues page for reporting bugs or requesting
-features. Available at <https://github.com/gem5/gem5/issues>.
+  features. Available at <https://github.com/gem5/gem5/issues>.
 * **Jira Issue Tracker**: A Jira Issue Tracker for reporting bugs or requesting
-features. Available at <https://gem5.atlassian.net/>.
+  features. Available at <https://gem5.atlassian.net/>.
 * **Slack**: A Slack server with a variety of channels for the gem5 community
-to engage in a variety of discussions. Please visit
-<https://www.gem5.org/join-slack> to join.
+  to engage in a variety of discussions. Please visit
+  <https://www.gem5.org/join-slack> to join.
 * **gem5-users@gem5.org**: A mailing list for users of gem5 to ask questions
-or start discussions. To join the mailing list please visit
-<https://www.gem5.org/mailing_lists>.
+  or start discussions. To join the mailing list please visit
+  <https://www.gem5.org/mailing_lists>.
 * **gem5-dev@gem5.org**: A mailing list for developers of gem5 to ask questions
-or start discussions. To join the mailing list please visit
-<https://www.gem5.org/mailing_lists>.
+  or start discussions. To join the mailing list please visit
+  <https://www.gem5.org/mailing_lists>.
 
 ## Contributing to gem5
 

@@ -27,6 +27,9 @@ class ComputeModule : public SimObject
     PARAMS(ComputeModule);
 
     ComputeModule(const Params &params);
+   
+    //matrixMul
+    gemm(const Params &params);
 };
 } // namespace gem5
 

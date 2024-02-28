@@ -148,12 +148,64 @@ using BusType = std::array<uint8_t, BUS_WIDTH / 8>;
 using CommandQueue = Stream<Instruction, STREAM_IN_DEPTH>;
 using DependencyQueue = Stream<Instruction, STREAM_IN_DEPTH>;
 
+
+/*
+二维数组 内部长度为INPUT_MATRIX_RATIO,外部长度为INPUT_BUFFER_DEPTH
+*/
 using InputBuffer =
     std::array<std::array<BusType, INPUT_MATRIX_RATIO>, INPUT_BUFFER_DEPTH>;
 using WeightBuffer =
     std::array<std::array<BusType, WEIGHT_MATRIX_RATIO>, WEIGHT_BUFFER_DEPTH>;
 using OutputBuffer =
     std::array<std::array<BusType, OUTPUT_MATRIX_RATIO>, OUTPUT_BUFFER_DEPTH>;
+
+using AccumulatorBuffer = 
+    std::array<std::array<BusType, ACCUMULATOR_MATRIX_RATIO>, ACCUMULATOR_BUFFER_DEPTH>;
+//add micro_opBuffer
+using MicroopBuffer = 
+      std::array<std::array<BusType,MICRO_OP_BUFFER_DEPTH>>;
+
+
+//read_tensor
+template <typename WIDE_T, typename NARROW_T, typename IDX_T, int WIDE_W, int NARROW_W, int Y_DIM, int X_DIM>
+void read_tensor(
+    IDX_T idx,
+    const std::array<std::array<WIDE_T, NARROW_W * Y_DIM * X_DIM / WIDE_W>, Y_DIM>& src,
+    std::array<std::array<NARROW_T, X_DIM>, Y_DIM>& dst) {
+
+    // Read in weight tensor
+    for (int p = 0; p < NARROW_W * Y_DIM * X_DIM / WIDE_W; p++) {
+        WIDE_T packet = src[idx][p];
+        for (int w = 0; w < (WIDE_W / NARROW_W); w++) {
+            int x = (p * (WIDE_W / NARROW_W) + w) / X_DIM;
+            int y = (p * (WIDE_W / NARROW_W) + w) % X_DIM;
+            dst[x][y] = static_cast<NARROW_T>(packet >> (w * NARROW_W)) & ((1 << NARROW_W) - 1);
+        }
+    }
+}
+
+//write_tensor
+template <typename WIDE_T, typename NARROW_T, typename IDX_T, int WIDE_W, int NARROW_W, int Y_DIM, int X_DIM>
+void write_tensor(
+  IDX_T idx,
+  NARROW_T src[Y_DIM][X_DIM],
+  WIDE_T dst[][NARROW_W * Y_DIM * X_DIM / WIDE_W]) {
+#pragma HLS INLINE
+
+  for (int p = 0; p < NARROW_W * Y_DIM * X_DIM / WIDE_W; p++) {
+    WIDE_T packet = 0;
+    for (int w = 0; w < (WIDE_W / NARROW_W); w++) {
+      int x = (p * (WIDE_W / NARROW_W) + w) / X_DIM;
+      int y = (p * (WIDE_W / NARROW_W) + w) % X_DIM;
+      packet.range((w + 1) * NARROW_W - 1, w * NARROW_W) = src[x][y];
+    }
+    dst[idx][p] = packet;
+  }
+}
+
+
+
+
 
 } // namespace vta
 

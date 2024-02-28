@@ -115,6 +115,29 @@ constexpr size_t MEM_OP_PAD_BIT_WIDTH{4};
 
 // GEMM/ALU
 constexpr size_t LOOP_ITER_WIDTH{14};
+//add code same as vta
+/*! GEMM Micro-op start position of the acc_idx field */
+constexpr size_t MICRO_OP_GEM_0_0{0};
+/*! GEMM Micro-op end position of the acc_idx field */
+constexpr size_t MICRO_OP_GEM_0_1{MICRO_OP_GEM_0_0 + LOG_ACCUMULATOR_BUFFER_DEPTH - 1};
+/*! GEMM Micro-op start position of the inp_idx field */
+constexpr size_t MICRO_OP_GEM_1_0{MICRO_OP_GEM_0_1 + 1};
+/*! GEMM Micro-op end position of the inp_idx field */
+constexpr size_t MICRO_OP_GEM_1_1{MICRO_OP_GEM_1_0 + LOG_INPUT_BUFFER_DEPTH - 1};
+/*! GEMM Micro-op start position of the wgt_idx field */
+constexpr size_t MICRO_OP_GEM_2_0{MICRO_OP_GEM_1_1 + 1};
+/*! GEMM Micro-op end position of the wgt_idx field */
+constexpr size_t MICRO_OP_GEM_2_1{MICRO_OP_GEM_2_0 + LOG_WEIGHT_BUFFER_DEPTH - 1};
+
+//ALU
+/*! GEMM Micro-op start position of the acc_idx field */
+constexpr size_t MICRO_OP_ALU_0_0{0};
+/*! GEMM Micro-op end position of the acc_idx field */
+constexpr size_t MICRO_OP_ALU_0_1{MICRO_OP_ALU_0_0 + LOG_ACCUMULATOR_BUFFER_DEPTH - 1};
+/*! GEMM Micro-op start position of the inp_idx field */
+constexpr size_t MICRO_OP_ALU_0_0{MICRO_OP_ALU_0_1 + 1};
+/*! GEMM Micro-op end position of the inp_idx field */
+constexpr size_t MICRO_OP_ALU_0_0{MICRO_OP_ALU_0_1 + LOG_INPUT_BUFFER_DEPTH - 1};
 
 // ALU
 constexpr size_t ALU_OP_IMMEDIATE_BIT_WIDTH{16};

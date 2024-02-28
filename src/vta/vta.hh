@@ -149,8 +149,24 @@ using CommandQueue = Stream<Instruction, STREAM_IN_DEPTH>;
 using DependencyQueue = Stream<Instruction, STREAM_IN_DEPTH>;
 
 
+
+
+//use std::bitset to define some type
+using acc_idx_T = std::bitset<acc_idx_T_width>;
+using inp_idx_T = std::bitset<inp_idx_T_width>;
+using wgt_idx_T = std::bitset<wgt_idx_T_width>;
+using uop_T = std::bitset<micro_op_width>;
+using wgt_T = std::bitset<WEIGHT_WIDTH>;
+using bus_T = std::bitset<BUS_WIDTH>;
+using inp_T = std::bitset<INPUT_WIDTH>;
+using acc_T = std::biset<ACCUMULATOR_WIDTH>;
+using out_T = std::bitset<OUTPUT_WIDTH>;
+using insn_T = std::bitset<INSTRUCTION_WIDTH>;
+
+
+
 /*
-二维数组 内部长度为INPUT_MATRIX_RATIO,外部长度为INPUT_BUFFER_DEPTH
+array INPUT_MATRIX_RATIO first dim , INPUT_BUFFER_DEPTH second dim
 */
 using InputBuffer =
     std::array<std::array<BusType, INPUT_MATRIX_RATIO>, INPUT_BUFFER_DEPTH>;
@@ -202,10 +218,6 @@ void write_tensor(
     dst[idx][p] = packet;
   }
 }
-
-
-
-
 
 } // namespace vta
 

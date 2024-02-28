@@ -81,6 +81,16 @@ constexpr size_t ACCUMULATOR_BUFFER_DEPTH{1 << LOG_ACCUMULATOR_BUFFER_DEPTH};
 constexpr size_t LOG_OUTPUT_BUFFER_DEPTH{LOG_INPUT_BUFFER_DEPTH};
 constexpr size_t OUTPUT_BUFFER_DEPTH{1 << LOG_OUTPUT_BUFFER_DEPTH};
 
+
+//computmodule type define   same as  vta.h
+constexpr int acc_idx_T_width =  LOG_ACCUMULATOR_BUFFER_DEPTH + 1;
+constexpr int inp_idx_T_width =  LOG_INPUT_BUFFER_DEPTH + 1;
+constexpr int wgt_idx_T_width =  LOG_WEIGHT_BUFFER_DEPTH + 1;
+constexpr int micro_op_width  =  MICRO_OP_WIDTH;
+constexpr int t = ACCUMULATOR_WIDTH;
+
+
+
 // Opcode
 constexpr size_t OPCODE_BIT_WIDTH{3};
 

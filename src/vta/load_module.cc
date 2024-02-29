@@ -11,20 +11,36 @@ LoadModule::LoadModuleWorkingEvent::LoadModuleWorkingEvent(
 {}
 
 auto
+LoadModule::startup() -> void
+{
+    this->schedule(workingEvent, curTick() + uint64_t(pollingLatency));
+}
+
+auto
 LoadModule::LoadModuleWorkingEvent::process() -> void
 {
-    while (loadModule->instruction || !loadModule->loadCommandQueue->empty()) {
+    while (!loadModule->lastInstructionFinish ||
+           !loadModule->loadCommandQueue->empty()) {
         switch (loadModule->status) {
         case LoadModuleStatus::WaitToRead:
-            if (loadModule->instruction == nullptr) {
+            if (loadModule->lastInstructionFinish) {
                 // get instruction from queue
+                auto tickStruct = loadModule->loadCommandQueue->pop();
+                loadModule->instruction =
+                    tickStruct.value.asMemoryInstruction();
+                loadModule->fetchInstTime = tickStruct.time;
+                loadModule->lastInstructionFinish = false;
             }
-            if (loadModule->instruction->pop_next_dependence) {
+            if (loadModule->instruction.pop_next_dependence) {
+                // check instruction flag then maybe read flag from data queue
+                // if queue can't read, delay to next time
                 if (loadModule->computeToLoadQueue->tryPop()) {
                     loadModule->status = LoadModuleStatus::Normal;
                 } else {
-                    loadModule->reschedule(this, curTick() + 1);
-                    return;
+                    loadModule->reschedule(this,
+                        curTick() +
+                            uint64_t(loadModule->waitDataQueueReadLatency));
+                    return; // return to wait next
                 }
             }
 
@@ -33,17 +49,28 @@ LoadModule::LoadModuleWorkingEvent::process() -> void
             // judge and do load
             break;
         case LoadModuleStatus::WaitToWrite:
-            if (loadModule->instruction->push_next_dependence)
+            if (loadModule->instruction.push_next_dependence) {
                 if (loadModule->loadToComputeQueue->tryPush()) {
                     loadModule->status = LoadModuleStatus::WaitToRead;
-                    // free instruction
+                    loadModule->lastInstructionFinish = true;
                 } else {
+                    // check instruction flag then maybe write flag from data
+                    // queue if queue can't read, delay to next time
                     loadModule->status = LoadModuleStatus::WaitToWrite;
-                    loadModule->reschedule(this, curTick() + 1);
+                    loadModule->reschedule(this,
+                        curTick() +
+                            uint64_t(loadModule->waitDataQueueWriteLatency));
+                    return; // return to wait next
                 }
+            }
             break;
         }
     }
+
+    loadModule->reschedule(
+        this, curTick() + uint64_t(loadModule->pollingLatency));
+
+    return;
 }
 
 LoadModule::LoadModule(const Params &params) :
@@ -55,7 +82,10 @@ LoadModule::LoadModule(const Params &params) :
     weightBuffer(params.weight_buffer),
     status(LoadModuleStatus::WaitToRead),
     workingEvent(this),
-    instruction(nullptr)
+    pollingLatency(params.polling_latency),
+    lastInstructionFinish(true),
+    waitDataQueueReadLatency(params.wait_dataqueue_read_latency),
+    waitDataQueueWriteLatency(params.wait_dataqueue_write_latency)
 {
     DPRINTF(BaseVTAFlag, "create LoadModule!\n");
 }

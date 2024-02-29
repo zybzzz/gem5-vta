@@ -1,6 +1,7 @@
 #ifndef LOAD_MODULE_HH
 #define LOAD_MODULE_HH
 
+#include "base/types.hh"
 #include "params/LoadModule.hh"
 #include "sim/eventq.hh"
 #include "sim/sim_object.hh"
@@ -36,12 +37,20 @@ class LoadModule : public SimObject
 
     LoadModuleWorkingEvent workingEvent;
 
-    vta::Instruction::MemoryInstruction *instruction;
+    vta::Instruction::MemoryInstruction instruction;
+    Tick fetchInstTime;
+
+    Cycles pollingLatency;
+    Cycles waitDataQueueWriteLatency;
+    Cycles waitDataQueueReadLatency;
+
+    bool lastInstructionFinish;
 
   public:
     PARAMS(LoadModule);
 
     LoadModule(const Params &params);
+    auto startup() -> void override;
 };
 } // namespace gem5
 

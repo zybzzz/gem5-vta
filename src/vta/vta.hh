@@ -154,7 +154,8 @@ struct Instruction
 using BusType = std::array<uint8_t, BUS_WIDTH / 8>;
 
 using CommandQueue = Stream<Instruction, STREAM_IN_DEPTH>;
-using DependencyQueue = Stream<Instruction, STREAM_IN_DEPTH>;
+// using DependencyQueue = Stream<Instruction, STREAM_IN_DEPTH>;
+using DependencyQueue = Stream<bool, STREAM_IN_DEPTH>;
 
 using InputBuffer =
     std::array<std::array<BusType, INPUT_MATRIX_RATIO>, INPUT_BUFFER_DEPTH>;

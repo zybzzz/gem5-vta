@@ -18,3 +18,11 @@ class LoadModule(SimObject):
 
     input_buffer = Param.Buffer(NULL, "VTA input buffer")
     weight_buffer = Param.Buffer(NULL, "VTA weight buffer")
+
+    polling_latency = Param.Cycles(10, "interval of polling")
+    wait_dataqueue_write_latency = Param.Cycles(
+        10, "time to wait dataqueue write"
+    )
+    wait_dataqueue_read_latency = Param.Cycles(
+        10, "time to wait dataqueue read"
+    )

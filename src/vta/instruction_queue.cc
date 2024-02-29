@@ -6,21 +6,11 @@
 namespace gem5
 {
 InstructionQueue::InstructionQueue(const Params &params) :
-    SimObject(params)
+    SimObject(params),
+    pushLatency(params.push_latency),
+    popLatency(params.pop_latency)
 {
     DPRINTF(BaseVTAFlag, "create InstructionQueue!\n");
-}
-
-int
-InstructionQueue::pushBack()
-{
-    return 0;
-}
-
-int
-InstructionQueue::popFront()
-{
-    return 0;
 }
 
 } // namespace gem5

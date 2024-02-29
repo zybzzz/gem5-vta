@@ -28,18 +28,22 @@ InstructionFetchModule::InstructionFetchModule(const Params &params) :
                 memory_type == vta::MemoryId::WEIGHT) {
                 DPRINTF(BaseVTAFlag, "instruction to load\n");
                 // loadCommandQueue << instruction;
+                loadCommandQueue->push(instruction);
             } else {
                 DPRINTF(BaseVTAFlag, "instruction to compute\n");
                 // computeCommandQueue << instruction;
+                computeCommandQueue->push(instruction);
             }
             break;
         case vta::Opcode::STORE:
             DPRINTF(BaseVTAFlag, "instruction to store\n");
             // storeCommandQueue << instruction;
+            storeCommandQueue->push(instruction);
             break;
         default:
             DPRINTF(BaseVTAFlag, "instruction to compute\n");
             // computeCommandQueue << instruction;
+            computeCommandQueue->push(instruction);
             break;
         }
     }

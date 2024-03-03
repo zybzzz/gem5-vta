@@ -5,6 +5,7 @@
 
 namespace gem5
 {
+
 ComputeModule::ComputeModule(const Params &params) :
     SimObject(params),
     computeCommandQueue(params.compute_command_queue),

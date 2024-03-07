@@ -190,10 +190,11 @@ gem5_scons.patch_re_compile_for_inline_flags()
 main = Environment(tools=[
         'default', 'git', TempFileSpawn, EnvDefaults, MakeActionTool,
         ConfigFile, AddLocalRPATH, SwitchingHeaders, TagImpliesTool, Blob
-    ])
+    ], COMPILATIONDB_USE_ABSPATH=True)
 
 main.Tool(SCons.Tool.FindTool(['gcc', 'clang'], main))
 main.Tool(SCons.Tool.FindTool(['g++', 'clang++'], main))
+main.Tool('compilation_db')
 
 Export('main')
 

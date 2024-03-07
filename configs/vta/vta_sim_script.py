@@ -3,7 +3,7 @@ import os
 import m5
 from m5.objects import *
 
-os.chdir(os.path.dirname(__file__))
+DIR = os.path.dirname(__file__)
 
 system = System()
 
@@ -27,7 +27,7 @@ vta.data_port = system.membus.cpu_side_ports
 
 root = Root(full_system=False, system=system, vta=vta)
 
-system.mem_ctrl[0].dram.image_file = "vta-dram.img"
+system.mem_ctrl[0].dram.image_file = f"{DIR}/vta-dram.img"
 
 m5.instantiate()
 

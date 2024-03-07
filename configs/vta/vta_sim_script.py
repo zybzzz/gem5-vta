@@ -16,6 +16,7 @@ system.mem_ranges = [AddrRange("2GB")]
 system.mem_ctrl = MemCtrl()
 system.mem_ctrl.dram = DDR4_2400_4x16()
 system.mem_ctrl.dram.range = system.mem_ranges[0]
+system.mem_ctrl.dram.image_file = f"{DIR}/vta-dram.img"
 system.mem_ctrl.port = system.membus.mem_side_ports
 system.system_port = system.membus.cpu_side_ports
 
@@ -26,8 +27,6 @@ vta.micro_op_port = system.membus.cpu_side_ports
 vta.data_port = system.membus.cpu_side_ports
 
 root = Root(full_system=False, system=system, vta=vta)
-
-system.mem_ctrl[0].dram.image_file = f"{DIR}/vta-dram.img"
 
 m5.instantiate()
 

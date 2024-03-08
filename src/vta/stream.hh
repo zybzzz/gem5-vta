@@ -19,12 +19,18 @@ class Stream
 
   public:
     auto
+    peek() const noexcept -> TickStruct<T>
+    {
+        return {{}, buf[read_ptr]};
+    }
+
+    auto
     pop() noexcept -> TickStruct<T>
     {
-        const T value = buf[read_ptr];
+        const auto ret{peek()};
         read_ptr = (read_ptr + 1) % N;
         --len;
-        return {{}, value};
+        return ret;
     }
 
     auto

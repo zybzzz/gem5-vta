@@ -50,6 +50,21 @@ class InstructionFetchModule : public SimObject
     InstructionQueue *computeCommandQueue;
     InstructionQueue *storeCommandQueue;
 
+    class ProgressEvent : public Event
+    {
+      private:
+        InstructionFetchModule &owner;
+
+      public:
+        ProgressEvent(InstructionFetchModule &owner) : owner{owner} {}
+
+        auto
+        process() -> void override
+        {
+            owner.reschedule(this, curTick() + 1);
+        }
+    } event{*this};
+
   public:
     PARAMS(InstructionFetchModule);
 
@@ -97,6 +112,12 @@ class InstructionFetchModule : public SimObject
                 break;
             }
         }
+    }
+
+    auto
+    startup() -> void override
+    {
+        schedule(event, curTick());
     }
 
     auto

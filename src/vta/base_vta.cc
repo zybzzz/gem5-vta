@@ -5,9 +5,7 @@
 
 namespace gem5
 {
-BaseVTA::BaseVTA(const Params &params) :
-    SimObject(params),
-    begin_event([this] { processBeginEvent(); }, name() + ".beginEvent")
+BaseVTA::BaseVTA(const Params &params) : SimObject(params)
 {
     DPRINTF(BaseVTAFlag, "===========================================\n");
     DPRINTF(BaseVTAFlag, "initializing gem5-vta ... user configuration "

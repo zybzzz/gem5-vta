@@ -9,21 +9,3 @@ class InstructionFetchModule(SimObject):
     cxx_class = "gem5::InstructionFetchModule"
 
     instruction_port = RequestPort("instruction port")
-
-    # FIXME this will cause error, but I don't know why
-    # load_command_queue = Param.InstructionQueue("load command queue")
-    # compute_command_queue = Param.InstructionQueue("compute command queue")
-    # store_command_queue = Param.InstructionQueue("store command queue")
-
-    # The type must be the same as declared in the c++ file
-    load_command_queue = Param.InstructionQueue(NULL, "load command queue")
-    compute_command_queue = Param.InstructionQueue(
-        NULL, "compute command queue"
-    )
-    store_command_queue = Param.InstructionQueue(NULL, "store command queue")
-
-    # TODO connect to DRAM
-
-    # def __init__(self, **kwargs):
-    #     super().__init__(**kwargs)
-    #     pass

@@ -19,7 +19,7 @@ class Stream
 
   public:
     auto
-    pop() -> TickStruct<T>
+    pop() noexcept -> TickStruct<T>
     {
         const T value = buf[read_ptr];
         read_ptr = (read_ptr + 1) % N;
@@ -28,7 +28,7 @@ class Stream
     }
 
     auto
-    push(const T &value) -> TickStruct<>
+    push(const T &value) noexcept -> TickStruct<>
     {
         buf[write_ptr] = value;
         write_ptr = (write_ptr + 1) % N;

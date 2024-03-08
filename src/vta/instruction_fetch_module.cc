@@ -41,6 +41,8 @@ InstructionFetchModule::InstructionFetchModule(const Params &params) :
             // storeCommandQueue << instruction;
             storeCommandQueue->push(instruction);
             break;
+        case vta::Opcode::FINISH:
+            break;
         default:
             DPRINTF(BaseVTAFlag, "instruction to compute\n");
             // computeCommandQueue << instruction;

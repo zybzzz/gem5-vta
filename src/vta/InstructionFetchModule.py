@@ -8,6 +8,8 @@ class InstructionFetchModule(SimObject):
     cxx_header = "vta/instruction_fetch_module.hh"
     cxx_class = "gem5::InstructionFetchModule"
 
+    instruction_port = RequestPort("instruction port")
+
     # FIXME this will cause error, but I don't know why
     # load_command_queue = Param.InstructionQueue("load command queue")
     # compute_command_queue = Param.InstructionQueue("compute command queue")

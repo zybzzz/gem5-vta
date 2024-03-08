@@ -1,8 +1,12 @@
 #ifndef INSTRUCTION_FETCH_MODULE_HH
 #define INSTRUCTION_FETCH_MODULE_HH
 
+#include <string>
+#include <string_view>
+
 #include "base/trace.hh"
 #include "debug/BaseVTAFlag.hh"
+#include "mem/port.hh"
 #include "params/InstructionFetchModule.hh"
 #include "sim/sim_object.hh"
 #include "vta/instruction_queue.hh"
@@ -15,6 +19,33 @@ namespace gem5
 class InstructionFetchModule : public SimObject
 {
   private:
+    class InstructionPort : public RequestPort
+    {
+      private:
+        InstructionFetchModule &owner;
+
+      public:
+        InstructionPort(
+            const std::string_view name, InstructionFetchModule &owner) :
+            RequestPort{std::string{name}}, owner{owner}
+        {}
+
+      protected:
+        auto
+        recvTimingResp(PacketPtr pkt) -> bool override
+        {
+            return true;
+        }
+
+        auto
+        recvReqRetry() -> void override
+        {}
+
+        auto
+        sendRetryResp() -> void override
+        {}
+    } instruction_port;
+
     InstructionQueue *loadCommandQueue;
     InstructionQueue *computeCommandQueue;
     InstructionQueue *storeCommandQueue;
@@ -23,10 +54,11 @@ class InstructionFetchModule : public SimObject
     PARAMS(InstructionFetchModule);
 
     InstructionFetchModule(const Params &params) :
-        SimObject(params),
-        loadCommandQueue(params.load_command_queue),
-        computeCommandQueue(params.compute_command_queue),
-        storeCommandQueue(params.store_command_queue)
+        SimObject{params},
+        instruction_port{params.name + ".instruction_port", *this},
+        loadCommandQueue{params.load_command_queue},
+        computeCommandQueue{params.compute_command_queue},
+        storeCommandQueue{params.store_command_queue}
     {
         DPRINTF(BaseVTAFlag, "create InstructionFetchModule!\n");
 
@@ -65,7 +97,16 @@ class InstructionFetchModule : public SimObject
                 break;
             }
         }
-    };
+    }
+
+    auto
+    getPort(const std::string &if_name, PortID idx) -> Port & override
+    {
+        if (if_name == std::string_view{"instruction_port"}) {
+            return instruction_port;
+        }
+        return SimObject::getPort(if_name, idx);
+    }
 };
 
 } // namespace gem5

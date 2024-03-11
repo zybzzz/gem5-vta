@@ -14,7 +14,7 @@ namespace vta
 
 struct Instruction
 {
-    std::array<uint8_t, INSTRUCTION_WIDTH> data;
+    std::array<uint8_t, INSTRUCTION_WIDTH / 8> data;
 
     struct MemoryInstruction
     {

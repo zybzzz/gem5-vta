@@ -24,7 +24,8 @@ struct Instruction
         uint64_t pop_next_dependence : 1;
         uint64_t push_prev_dependence : 1;
         uint64_t push_next_dependence : 1;
-        uint64_t : 128 - OPCODE_BIT_WIDTH - 4;
+        uint64_t : 64 - OPCODE_BIT_WIDTH - 4;
+        uint64_t : 64;
 
         operator Instruction() const noexcept
         {

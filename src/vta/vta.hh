@@ -12,6 +12,7 @@
 namespace vta
 {
 
+#pragma pack(1)
 struct Instruction
 {
     std::array<uint8_t, INSTRUCTION_WIDTH / 8> data;
@@ -142,6 +143,8 @@ struct Instruction
         return *this;
     }
 };
+
+#pragma pack()
 
 using BusType = std::array<uint8_t, BUS_WIDTH / 8>;
 

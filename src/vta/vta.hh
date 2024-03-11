@@ -17,6 +17,21 @@ struct Instruction
 {
     std::array<uint8_t, INSTRUCTION_WIDTH / 8> data;
 
+    struct CommonInstruction
+    {
+        Opcode opcode : OPCODE_BIT_WIDTH;
+        uint64_t pop_prev_dependence : 1;
+        uint64_t pop_next_dependence : 1;
+        uint64_t push_prev_dependence : 1;
+        uint64_t push_next_dependence : 1;
+        uint64_t : 128 - OPCODE_BIT_WIDTH - 4;
+
+        operator Instruction() const noexcept
+        {
+            return bit_cast<Instruction>(*this);
+        }
+    };
+
     struct MemoryInstruction
     {
         Opcode opcode : OPCODE_BIT_WIDTH;
@@ -125,7 +140,7 @@ struct Instruction
     constexpr auto
     opcode() const noexcept -> Opcode
     {
-        return static_cast<Opcode>(data.front());
+        return bit_cast<CommonInstruction>(*this).opcode;
     }
 
     constexpr auto

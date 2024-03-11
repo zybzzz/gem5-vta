@@ -104,40 +104,43 @@ struct Instruction
         }
     };
 
+    constexpr
     operator MemoryInstruction() const noexcept
     {
         return bit_cast<MemoryInstruction>(*this);
     }
 
+    constexpr
     operator GemmInstruction() const noexcept
     {
         return bit_cast<GemmInstruction>(*this);
     }
 
+    constexpr
     operator AluInstruction() const noexcept
     {
         return bit_cast<AluInstruction>(*this);
     }
 
-    auto
+    constexpr auto
     opcode() const noexcept -> Opcode
     {
         return static_cast<Opcode>(data.front());
     }
 
-    auto
+    constexpr auto
     asMemoryInstruction() const noexcept -> MemoryInstruction
     {
         return *this;
     }
 
-    auto
+    constexpr auto
     asGemmInstruction() const noexcept -> GemmInstruction
     {
         return *this;
     }
 
-    auto
+    constexpr auto
     asAluInstruction() const noexcept -> AluInstruction
     {
         return *this;

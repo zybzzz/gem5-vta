@@ -1,6 +1,9 @@
 #ifndef BASE_VTA_HH
 #define BASE_VTA_HH
 
+#include <string>
+#include <string_view>
+
 #include "base/trace.hh"
 #include "debug/BaseVTAFlag.hh"
 #include "params/BaseVTA.hh"
@@ -31,6 +34,16 @@ class BaseVTA : public SimObject
     virtual void
     startup() override
     {}
+
+    virtual auto
+    getPort(const std::string &if_name,
+        PortID idx = InvalidPortID) -> Port & override
+    {
+        if (if_name == std::string_view{"instruction_port"}) {
+            return instructionFetchModule.getPort(if_name, idx);
+        }
+        return SimObject::getPort(if_name, idx);
+    }
 };
 
 } // namespace gem5

@@ -12,7 +12,7 @@ class CommandQueue : public SimObject, public vta::CommandQueue
 {
   public:
     PARAMS(CommandQueue);
-    CommandQueue(const Params &params) : SimObject(params) {}
+    CommandQueue(const Params &params) : SimObject{params} {}
 };
 
 } // namespace gem5

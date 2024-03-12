@@ -12,7 +12,7 @@ class DependencyQueue : public SimObject, public vta::DependencyQueue
 {
   public:
     PARAMS(DependencyQueue);
-    DependencyQueue(const Params &params) : SimObject(params) {}
+    DependencyQueue(const Params &params) : SimObject{params} {}
 };
 
 } // namespace gem5

@@ -5,7 +5,7 @@
 #include "debug/BaseVTAFlag.hh"
 #include "params/BaseVTA.hh"
 #include "sim/sim_object.hh"
-#include "vta/vta.hh"
+#include "vta/instruction_fetch_module.hh"
 
 namespace gem5
 {
@@ -13,14 +13,14 @@ namespace gem5
 class BaseVTA : public SimObject
 {
   private:
-    vta::CommandQueue loadCommandQueue{};
-    vta::CommandQueue computeCommandQueue{};
-    vta::CommandQueue storeCommandQueue{};
+    InstructionFetchModule &instructionFetchModule;
 
   public:
     PARAMS(BaseVTA);
 
-    BaseVTA(const Params &params) : SimObject(params)
+    BaseVTA(const Params &params) :
+        SimObject{params},
+        instructionFetchModule{*params.instruction_fetch_module}
     {
         DPRINTF(BaseVTAFlag, "===========================================\n");
         DPRINTF(BaseVTAFlag, "initializing gem5-vta ... user configuration "

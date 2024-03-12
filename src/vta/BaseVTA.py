@@ -2,6 +2,7 @@ from m5.params import *
 from m5.SimObject import SimObject
 from m5.objects.Buffer import *
 from m5.objects.ComputeModule import *
+from m5.objects.CommandQueue import *
 from m5.objects.DataQueue import *
 from m5.objects.InstructionQueue import *
 from m5.objects.InstructionFetchModule import *
@@ -17,6 +18,20 @@ class BaseVTA(SimObject):
     instruction_port = RequestPort("instruction port")
     micro_op_port = RequestPort("micro_op port")
     data_port = RequestPort("data port")
+
+    load_command_queue = CommandQueue()
+    compute_command_queue = CommandQueue()
+    store_command_queue = CommandQueue()
+
+    instruction_fetch_module = InstructionFetchModule()
+    instruction_fetch_module.load_command_queue = load_command_queue
+    instruction_fetch_module.compute_command_queue = compute_command_queue
+    instruction_fetch_module.store_command_queue = store_command_queue
+
+    instruction_fetch_module = Param.InstructionFetchModule(
+        instruction_fetch_module,
+        "instruction fetch module",
+    )
 
     # VTA configs
     # reference at https://tvm.apache.org/docs/topic/vta/dev/config.html#parameters-overview
@@ -55,17 +70,9 @@ class BaseVTA(SimObject):
     )
 
     ## regular module
-    instruction_fetch_module = Param.InstructionFetchModule(
-        InstructionFetchModule(), "instruction fetch module"
-    )
     compute_module = Param.ComputeModule(ComputeModule(), "compute module")
     load_module = Param.LoadModule(LoadModule(), "load module")
     store_module = Param.StoreModule(StoreModule(), "store module")
-
-    # instruction fetch module
-    instruction_fetch_module.load_queue = load_queue
-    instruction_fetch_module.compute_command_queue = compute_command_queue
-    instruction_fetch_module.store_queue = store_queue
 
     # compute module
     compute_module.compute_command_queue = compute_command_queue

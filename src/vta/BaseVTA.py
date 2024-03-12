@@ -1,4 +1,5 @@
 from m5.params import *
+from m5.proxy import *
 from m5.SimObject import SimObject
 from m5.objects.Buffer import *
 from m5.objects.ComputeModule import *
@@ -18,6 +19,8 @@ class BaseVTA(SimObject):
     instruction_port = RequestPort("instruction port")
     micro_op_port = RequestPort("micro_op port")
     data_port = RequestPort("data port")
+
+    system = Parent.any
 
     load_command_queue = CommandQueue()
     compute_command_queue = CommandQueue()

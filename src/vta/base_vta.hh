@@ -32,6 +32,13 @@ class BaseVTA : public SimObject
     }
 
     virtual void
+    init() override
+    {
+        instructionFetchModule.requestorId() = params().system->getRequestorId(
+            &instructionFetchModule, "instruction_fetch_module");
+    }
+
+    virtual void
     startup() override
     {}
 

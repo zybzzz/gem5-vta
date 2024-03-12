@@ -30,6 +30,8 @@ class InstructionFetchModule : public SimObject
     size_t pc{};
     vta::Instruction instruction;
 
+    RequestorID id;
+
     class InstructionPort : public RequestPort
     {
       private:
@@ -91,7 +93,7 @@ class InstructionFetchModule : public SimObject
             case State::FETCH: {
                 DPRINTF(BaseVTAFlag, "Fetch\n");
                 const auto req{std::make_shared<Request>(Addr{owner.pc},
-                    sizeof(vta::Instruction), Request::INST_FETCH, 3)};
+                    sizeof(vta::Instruction), Request::INST_FETCH, owner.id)};
                 auto packet{new Packet{req, MemCmd::ReadReq}};
                 DPRINTF(BaseVTAFlag, "Packet: %s\n", packet->print());
                 packet->dataStatic(&owner.instruction);
@@ -179,6 +181,12 @@ class InstructionFetchModule : public SimObject
             return instruction_port;
         }
         return SimObject::getPort(if_name, idx);
+    }
+
+    constexpr auto
+    requestorId() noexcept -> RequestorID &
+    {
+        return id;
     }
 };
 

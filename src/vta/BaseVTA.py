@@ -20,7 +20,7 @@ class BaseVTA(SimObject):
     micro_op_port = RequestPort("micro_op port")
     data_port = RequestPort("data port")
 
-    system = Parent.any
+    system = Param.System(Parent.any, "system object")
 
     load_command_queue = CommandQueue()
     compute_command_queue = CommandQueue()

@@ -8,6 +8,7 @@
 #include "debug/BaseVTAFlag.hh"
 #include "params/BaseVTA.hh"
 #include "sim/sim_object.hh"
+#include "sim/system.hh"
 #include "vta/instruction_fetch_module.hh"
 
 namespace gem5

@@ -1,5 +1,8 @@
 from m5.params import *
 from m5.SimObject import SimObject
+from m5.objects.Buffer import *
+from m5.objects.CommandQueue import *
+from m5.objects.DependencyQueue import *
 
 
 class StoreModule(SimObject):
@@ -7,13 +10,13 @@ class StoreModule(SimObject):
     cxx_header = "vta/store_module.hh"
     cxx_class = "gem5::StoreModule"
 
-    store_command_queue = Param.InstructionQueue(NULL, "store command queue")
+    store_command_queue = Param.CommandQueue("store command queue")
 
-    compute_to_store_queue = Param.DataQueue(
-        NULL, "compute module to store module queue"
+    compute_to_store_queue = Param.DependencyQueue(
+        "compute module to store module queue"
     )
-    store_to_compute_queue = Param.DataQueue(
-        NULL, "store module to compute module queue"
+    store_to_compute_queue = Param.DependencyQueue(
+        "store module to compute module queue"
     )
 
-    output_buffer = Param.Buffer(NULL, "VTA output buffer")
+    output_buffer = Param.Buffer("VTA output buffer")

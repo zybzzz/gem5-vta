@@ -14,6 +14,7 @@ class CommandQueue : public Queue<vta::Instruction, vta::STREAM_IN_DEPTH, 1, 1>
 {
   public:
     PARAMS(CommandQueue);
+
     CommandQueue(const Params &params) : Queue{params} {}
 };
 

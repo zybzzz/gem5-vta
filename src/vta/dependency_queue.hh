@@ -13,6 +13,7 @@ class DependencyQueue : public Queue<bool, vta::STREAM_IN_DEPTH, 1, 1>
 {
   public:
     PARAMS(DependencyQueue);
+
     DependencyQueue(const Params &params) : Queue{params} {}
 };
 

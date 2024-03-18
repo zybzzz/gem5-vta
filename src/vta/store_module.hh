@@ -21,6 +21,8 @@ class StoreModule : public SimObject
 {
   private:
     RequestorID id;
+    bool finish_{};
+    Event *finishEvent_;
 
     class DataPort : public RequestPort
     {
@@ -92,6 +94,18 @@ class StoreModule : public SimObject
     requestorId() noexcept -> RequestorID &
     {
         return id;
+    }
+
+    constexpr auto
+    finish() -> bool &
+    {
+        return finish_;
+    }
+
+    constexpr auto
+    finishEvent() noexcept -> Event *&
+    {
+        return finishEvent_;
     }
 };
 

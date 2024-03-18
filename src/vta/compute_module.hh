@@ -20,6 +20,8 @@ class ComputeModule : public SimObject
 {
   private:
     RequestorID id;
+    bool finish_{};
+    Event *finishEvent_;
 
     class MicroOpPort : public RequestPort
     {
@@ -119,6 +121,18 @@ class ComputeModule : public SimObject
     requestorId() noexcept -> RequestorID &
     {
         return id;
+    }
+
+    constexpr auto
+    finish() -> bool &
+    {
+        return finish_;
+    }
+
+    constexpr auto
+    finishEvent() noexcept -> Event *&
+    {
+        return finishEvent_;
     }
 };
 

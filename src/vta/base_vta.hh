@@ -75,6 +75,9 @@ class BaseVTA : public SimObject
             params().system->getRequestorId(&storeModule, "store_module");
 
         instructionFetchModule.finishEvent() = &finishEvent;
+        loadModule.finishEvent() = &finishEvent;
+        computeModule.finishEvent() = &finishEvent;
+        storeModule.finishEvent() = &finishEvent;
     }
 
     virtual void
@@ -103,7 +106,8 @@ class BaseVTA : public SimObject
     constexpr auto
     finish() -> bool
     {
-        return instructionFetchModule.finish();
+        return instructionFetchModule.finish() && loadModule.finish() &&
+               computeModule.finish() && storeModule.finish();
     }
 };
 

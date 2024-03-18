@@ -24,6 +24,8 @@ class LoadModule : public SimObject
     bool lastInstructionFinish{true};
 
     RequestorID id;
+    bool finish_{};
+    Event *finishEvent_;
 
     class DataPort : public RequestPort
     {
@@ -157,6 +159,18 @@ class LoadModule : public SimObject
     requestorId() noexcept -> RequestorID &
     {
         return id;
+    }
+
+    constexpr auto
+    finish() -> bool &
+    {
+        return finish_;
+    }
+
+    constexpr auto
+    finishEvent() noexcept -> Event *&
+    {
+        return finishEvent_;
     }
 };
 

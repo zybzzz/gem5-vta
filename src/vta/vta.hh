@@ -182,6 +182,10 @@ struct Instruction
 
 #pragma pack()
 
+using MemoryInstruction = Instruction::MemoryInstruction;
+using GemmInstruction = Instruction::GemmInstruction;
+using AluInstruction = Instruction::AluInstruction;
+
 using BusType = std::array<uint8_t, BUS_WIDTH / 8>;
 
 using CommandQueue = Stream<Instruction, STREAM_IN_DEPTH>;

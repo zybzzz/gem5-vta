@@ -3,6 +3,9 @@
 
 #include <array>
 #include <cstdint>
+#include <iomanip>
+#include <ios>
+#include <ostream>
 
 #include "vta/bit_cast.hh"
 #include "vta/stream.hh"
@@ -160,6 +163,20 @@ struct Instruction
     asAluInstruction() const noexcept -> AluInstruction
     {
         return *this;
+    }
+
+    friend auto
+    operator<<(
+        std::ostream &os, const Instruction &instruction) -> std::ostream &
+    {
+        const auto flags{os.flags()};
+        const auto fill{os.fill('0')};
+        const auto [low, high]{bit_cast<std::array<uint64_t, 2>>(instruction)};
+        os << "0x" << std::hex << std::setw(16) << high << std::setw(16)
+           << low;
+        os.flags(flags);
+        os.fill(fill);
+        return os;
     }
 };
 

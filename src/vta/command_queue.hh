@@ -3,16 +3,18 @@
 
 #include "params/CommandQueue.hh"
 #include "sim/sim_object.hh"
+#include "vta/queue.hh"
 #include "vta/vta.hh"
+#include "vta/vta_hw_config.hh"
 
 namespace gem5
 {
 
-class CommandQueue : public SimObject, public vta::CommandQueue
+class CommandQueue : public Queue<vta::Instruction, vta::STREAM_IN_DEPTH, 1, 1>
 {
   public:
     PARAMS(CommandQueue);
-    CommandQueue(const Params &params) : SimObject{params} {}
+    CommandQueue(const Params &params) : Queue{params} {}
 };
 
 } // namespace gem5

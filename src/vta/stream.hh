@@ -4,8 +4,6 @@
 #include <array>
 #include <cstddef>
 
-#include "vta/tick_struct.hh"
-
 namespace vta
 {
 
@@ -19,13 +17,13 @@ class Stream
 
   public:
     auto
-    peek() const noexcept -> TickStruct<T>
+    peek() const noexcept -> T
     {
-        return {{}, buf[read_ptr]};
+        return buf[read_ptr];
     }
 
     auto
-    pop() noexcept -> TickStruct<T>
+    pop() noexcept -> T
     {
         const auto ret{peek()};
         read_ptr = (read_ptr + 1) % N;
@@ -34,12 +32,11 @@ class Stream
     }
 
     auto
-    push(const T &value) noexcept -> TickStruct<>
+    push(const T &value) noexcept -> void
     {
         buf[write_ptr] = value;
         write_ptr = (write_ptr + 1) % N;
         ++len;
-        return {{}};
     }
 
     auto

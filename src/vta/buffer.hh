@@ -6,14 +6,15 @@
 
 namespace gem5
 {
+
 class Buffer : public SimObject
 {
-  private:
   public:
     PARAMS(Buffer);
 
-    Buffer(const Params &params);
+    Buffer(const Params &params) : SimObject{params} {};
 };
+
 } // namespace gem5
 
 #endif

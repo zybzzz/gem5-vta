@@ -32,6 +32,8 @@ class InstructionFetchModule : public SimObject
     vta::Instruction instruction;
 
     RequestorID id;
+    bool finish_{};
+    Event *finishEvent_;
 
     class InstructionPort : public RequestPort
     {
@@ -165,6 +167,11 @@ class InstructionFetchModule : public SimObject
                 state = State::FINISH;
                 break;
             case State::FINISH:
+                if (owner.finish()) {
+                    panic("Finished\n");
+                }
+                owner.finish() = true;
+                owner.schedule(owner.finishEvent(), curTick());
                 break;
             }
         }
@@ -208,6 +215,18 @@ class InstructionFetchModule : public SimObject
     requestorId() noexcept -> RequestorID &
     {
         return id;
+    }
+
+    constexpr auto
+    finish() -> bool &
+    {
+        return finish_;
+    }
+
+    constexpr auto
+    finishEvent() noexcept -> Event *&
+    {
+        return finishEvent_;
     }
 };
 

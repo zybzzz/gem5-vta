@@ -7,9 +7,13 @@
 #include "base/trace.hh"
 #include "debug/BaseVTAFlag.hh"
 #include "params/BaseVTA.hh"
+#include "sim/eventq.hh"
+#include "sim/sim_events.hh"
 #include "sim/sim_object.hh"
 #include "sim/system.hh"
 #include "vta/instruction_fetch_module.hh"
+
+using namespace std::literals;
 
 namespace gem5
 {
@@ -18,6 +22,23 @@ class BaseVTA : public SimObject
 {
   private:
     InstructionFetchModule &instructionFetchModule;
+
+    class FinishEvent : public Event
+    {
+      private:
+        BaseVTA &owner;
+
+      public:
+        FinishEvent(BaseVTA &owner) : owner{owner} {}
+
+        virtual auto
+        process() -> void override
+        {
+            if (owner.finish()) {
+                new GlobalSimLoopExitEvent{"Finish simulation\n", 0, 0};
+            }
+        }
+    } finishEvent{*this};
 
   public:
     PARAMS(BaseVTA);
@@ -37,6 +58,7 @@ class BaseVTA : public SimObject
     {
         instructionFetchModule.requestorId() = params().system->getRequestorId(
             &instructionFetchModule, "instruction_fetch_module");
+        instructionFetchModule.finishEvent() = &finishEvent;
     }
 
     virtual void
@@ -47,10 +69,16 @@ class BaseVTA : public SimObject
     getPort(const std::string &if_name,
         PortID idx = InvalidPortID) -> Port & override
     {
-        if (if_name == std::string_view{"instruction_port"}) {
+        if (if_name == "instruction_port"sv) {
             return instructionFetchModule.getPort(if_name, idx);
         }
         return SimObject::getPort(if_name, idx);
+    }
+
+    constexpr auto
+    finish() -> bool
+    {
+        return instructionFetchModule.finish();
     }
 };
 

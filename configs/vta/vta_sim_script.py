@@ -25,7 +25,9 @@ vta = BaseVTA()
 
 vta.instruction_port = system.membus.cpu_side_ports
 vta.micro_op_port = system.membus.cpu_side_ports
-vta.data_port = system.membus.cpu_side_ports
+vta.load_data_port = system.membus.cpu_side_ports
+vta.compute_data_port = system.membus.cpu_side_ports
+vta.store_data_port = system.membus.cpu_side_ports
 
 root = Root(full_system=False, system=system, vta=vta)
 

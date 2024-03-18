@@ -16,8 +16,10 @@ class BaseVTA(SimObject):
     cxx_class = "gem5::BaseVTA"
 
     instruction_port = RequestPort("instruction port")
-    micro_op_port = RequestPort("micro_op port")
-    data_port = RequestPort("data port")
+    micro_op_port = RequestPort("micro op port")
+    load_data_port = RequestPort("load data port")
+    compute_data_port = RequestPort("compute data port")
+    store_data_port = RequestPort("store data port")
 
     system = Param.System(Parent.any, "system object")
 

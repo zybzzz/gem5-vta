@@ -11,7 +11,10 @@
 #include "sim/sim_events.hh"
 #include "sim/sim_object.hh"
 #include "sim/system.hh"
+#include "vta/compute_module.hh"
 #include "vta/instruction_fetch_module.hh"
+#include "vta/load_module.hh"
+#include "vta/store_module.hh"
 
 using namespace std::literals;
 
@@ -22,6 +25,9 @@ class BaseVTA : public SimObject
 {
   private:
     InstructionFetchModule &instructionFetchModule;
+    LoadModule &loadModule;
+    ComputeModule &computeModule;
+    StoreModule &storeModule;
 
     class FinishEvent : public Event
     {
@@ -45,7 +51,10 @@ class BaseVTA : public SimObject
 
     BaseVTA(const Params &params) :
         SimObject{params},
-        instructionFetchModule{*params.instruction_fetch_module}
+        instructionFetchModule{*params.instruction_fetch_module},
+        loadModule{*params.load_module},
+        computeModule{*params.compute_module},
+        storeModule{*params.store_module}
     {
         DPRINTF(BaseVTAFlag, "===========================================\n");
         DPRINTF(BaseVTAFlag, "initializing gem5-vta ... user configuration "
@@ -58,6 +67,13 @@ class BaseVTA : public SimObject
     {
         instructionFetchModule.requestorId() = params().system->getRequestorId(
             &instructionFetchModule, "instruction_fetch_module");
+        loadModule.requestorId() =
+            params().system->getRequestorId(&loadModule, "load_module");
+        computeModule.requestorId() =
+            params().system->getRequestorId(&computeModule, "compute_module");
+        storeModule.requestorId() =
+            params().system->getRequestorId(&storeModule, "store_module");
+
         instructionFetchModule.finishEvent() = &finishEvent;
     }
 
@@ -71,6 +87,15 @@ class BaseVTA : public SimObject
     {
         if (if_name == "instruction_port"sv) {
             return instructionFetchModule.getPort(if_name, idx);
+        }
+        if (if_name == "load_data_port"sv) {
+            return loadModule.getPort(if_name, idx);
+        }
+        if (if_name == "micro_op_port"sv || if_name == "compute_data_port"sv) {
+            return computeModule.getPort(if_name, idx);
+        }
+        if (if_name == "store_data_port"sv) {
+            return storeModule.getPort(if_name, idx);
         }
         return SimObject::getPort(if_name, idx);
     }

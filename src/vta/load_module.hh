@@ -3,12 +3,15 @@
 
 #include "base/trace.hh"
 #include "debug/BaseVTAFlag.hh"
+#include "mem/port.hh"
 #include "params/LoadModule.hh"
 #include "sim/eventq.hh"
 #include "sim/sim_object.hh"
 #include "vta/buffer.hh"
 #include "vta/command_queue.hh"
 #include "vta/dependency_queue.hh"
+
+using namespace std::literals;
 
 namespace gem5
 {
@@ -19,6 +22,35 @@ class LoadModule : public SimObject
     vta::MemoryInstruction instruction;
 
     bool lastInstructionFinish{true};
+
+    RequestorID id;
+
+    class DataPort : public RequestPort
+    {
+      private:
+        LoadModule &owner;
+
+      public:
+        DataPort(const std::string_view name, LoadModule &owner) :
+            RequestPort{std::string{name}}, owner{owner}
+        {}
+
+      protected:
+        virtual auto
+        recvTimingResp(PacketPtr pkt) -> bool override
+        {
+            delete pkt;
+            return true;
+        }
+
+        virtual auto
+        recvReqRetry() -> void override
+        {}
+
+        virtual auto
+        sendRetryResp() -> void override
+        {}
+    } data_port;
 
     CommandQueue &loadCommandQueue;
 
@@ -36,7 +68,7 @@ class LoadModule : public SimObject
       public:
         LoadModuleWorkingEvent(LoadModule &owner) : owner(owner) {}
 
-        auto
+        virtual auto
         process() -> void override
         {
             static enum class Status {
@@ -98,6 +130,7 @@ class LoadModule : public SimObject
 
     LoadModule(const Params &params) :
         SimObject{params},
+        data_port{params.name + ".load_data_port", *this},
         loadCommandQueue{*params.load_command_queue},
         loadToComputeQueue{*params.load_to_compute_queue},
         computeToLoadQueue{*params.compute_to_load_queue},
@@ -109,6 +142,21 @@ class LoadModule : public SimObject
     startup() -> void override
     {
         schedule(workingEvent, curTick());
+    }
+
+    virtual auto
+    getPort(const std::string &if_name, PortID idx) -> Port & override
+    {
+        if (if_name == "load_data_port"sv) {
+            return data_port;
+        }
+        return SimObject::getPort(if_name, idx);
+    }
+
+    constexpr auto
+    requestorId() noexcept -> RequestorID &
+    {
+        return id;
     }
 };
 

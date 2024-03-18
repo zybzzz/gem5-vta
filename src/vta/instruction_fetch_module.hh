@@ -47,7 +47,7 @@ class InstructionFetchModule : public SimObject
         {}
 
       protected:
-        auto
+        virtual auto
         recvTimingResp(PacketPtr pkt) -> bool override
         {
             delete pkt;
@@ -56,11 +56,11 @@ class InstructionFetchModule : public SimObject
             return true;
         }
 
-        auto
+        virtual auto
         recvReqRetry() -> void override
         {}
 
-        auto
+        virtual auto
         sendRetryResp() -> void override
         {}
     } instruction_port;

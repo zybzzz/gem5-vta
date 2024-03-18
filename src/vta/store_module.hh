@@ -82,6 +82,15 @@ class StoreModule : public SimObject
     {}
 
     virtual auto
+    init() -> void override
+    {
+        storeCommandQueue.consumerEvent = nullptr;
+
+        computeToStoreQueue.consumerEvent = nullptr;
+        storeToComputeQueue.producerEvent = nullptr;
+    }
+
+    virtual auto
     getPort(const std::string &if_name, PortID idx) -> Port & override
     {
         if (if_name == "store_data_port"sv) {

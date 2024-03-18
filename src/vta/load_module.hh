@@ -141,6 +141,15 @@ class LoadModule : public SimObject
     {}
 
     virtual auto
+    init() -> void override
+    {
+        loadCommandQueue.consumerEvent = nullptr;
+
+        loadToComputeQueue.producerEvent = nullptr;
+        computeToLoadQueue.consumerEvent = nullptr;
+    }
+
+    virtual auto
     startup() -> void override
     {
         schedule(workingEvent, curTick());

@@ -106,6 +106,17 @@ class ComputeModule : public SimObject
     {}
 
     virtual auto
+    init() -> void override
+    {
+        computeCommandQueue.consumerEvent = nullptr;
+
+        loadToComputeQueue.consumerEvent = nullptr;
+        computeToLoadQueue.producerEvent = nullptr;
+        computeToStoreQueue.producerEvent = nullptr;
+        storeToComputeQueue.consumerEvent = nullptr;
+    }
+
+    virtual auto
     getPort(const std::string &if_name, PortID idx) -> Port & override
     {
         if (if_name == "micro_op_port"sv) {

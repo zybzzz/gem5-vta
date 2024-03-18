@@ -11,7 +11,6 @@
 #include "base/types.hh"
 #include "debug/BaseVTAFlag.hh"
 #include "mem/packet.hh"
-#include "mem/packet_access.hh"
 #include "mem/port.hh"
 #include "mem/request.hh"
 #include "params/InstructionFetchModule.hh"
@@ -20,6 +19,8 @@
 #include "vta/command_queue.hh"
 #include "vta/vta.hh"
 #include "vta/vta_const.hh"
+
+using namespace std::literals;
 
 namespace gem5
 {
@@ -48,13 +49,8 @@ class InstructionFetchModule : public SimObject
         recvTimingResp(PacketPtr pkt) -> bool override
         {
             delete pkt;
-            DPRINTF(BaseVTAFlag, "Instruction: %016lx%016lx\n",
-                *(uint64_t *)&owner.instruction.data[8],
-                *(uint64_t *)&owner.instruction.data[0]);
-            DPRINTF(
-                BaseVTAFlag, "Opcode: %d\n", (int)owner.instruction.opcode());
+            DPRINTF(BaseVTAFlag, "Instruction: %s\n", owner.instruction);
             owner.schedule(owner.event, curTick());
-            DPRINTF(BaseVTAFlag, "Instruction fetch event scheduled\n");
             return true;
         }
 
@@ -79,7 +75,7 @@ class InstructionFetchModule : public SimObject
       public:
         ProgressEvent(InstructionFetchModule &owner) : owner{owner} {}
 
-        auto
+        virtual auto
         process() -> void override
         {
             static enum class State {
@@ -88,20 +84,25 @@ class InstructionFetchModule : public SimObject
                 LOAD,
                 COMPUTE,
                 STORE,
+                FINISH_LOAD,
+                FINISH_COMPUTE,
+                FINISH_STORE,
+                FINISH,
             } state{};
+
             switch (state) {
             case State::FETCH: {
                 DPRINTF(BaseVTAFlag, "Fetch\n");
                 const auto req{std::make_shared<Request>(Addr{owner.pc},
                     sizeof(vta::Instruction),
                     Request::INST_FETCH | Request::PHYSICAL, owner.id)};
-                auto packet{new Packet{req, MemCmd::ReadReq}};
+                auto *const packet{new Packet{req, MemCmd::ReadReq}};
                 DPRINTF(BaseVTAFlag, "Packet: %s\n", packet->print());
                 packet->dataStatic(&owner.instruction);
                 const auto ret{owner.instruction_port.sendTimingReq(packet)};
                 assert(ret);
                 state = State::DECODE;
-                return;
+                break;
             }
             case State::DECODE: {
                 DPRINTF(BaseVTAFlag, "Decode\n");
@@ -123,38 +124,49 @@ class InstructionFetchModule : public SimObject
                     state = State::STORE;
                     break;
                 case vta::Opcode::FINISH:
-                    DPRINTF(BaseVTAFlag, "Finish\n");
-                    return;
-                default:
+                    state = State::FINISH_LOAD;
+                    break;
+                case vta::Opcode::GEMM:
+                case vta::Opcode::ALU:
                     state = State::COMPUTE;
                     break;
+                default:
+                    panic("Illegal instruction %s at pc 0x%016lx\n",
+                        owner.instruction, owner.pc);
                 }
                 process();
-                return;
+                break;
             }
             case State::LOAD:
                 DPRINTF(BaseVTAFlag, "Load\n");
-                if (!owner.loadCommandQueue.full()) {
-                    owner.loadCommandQueue.push(owner.instruction);
-                    state = State::FETCH;
-                }
+                owner.loadCommandQueue.write(owner.instruction);
+                state = State::FETCH;
                 break;
             case State::COMPUTE:
                 DPRINTF(BaseVTAFlag, "Compute\n");
-                if (!owner.computeCommandQueue.full()) {
-                    owner.computeCommandQueue.push(owner.instruction);
-                    state = State::FETCH;
-                }
+                owner.computeCommandQueue.write(owner.instruction);
+                state = State::FETCH;
                 break;
             case State::STORE:
                 DPRINTF(BaseVTAFlag, "Store\n");
-                if (!owner.storeCommandQueue.full()) {
-                    owner.storeCommandQueue.push(owner.instruction);
-                    state = State::FETCH;
-                }
+                owner.storeCommandQueue.write(owner.instruction);
+                state = State::FETCH;
+                break;
+            case State::FINISH_LOAD:
+                owner.loadCommandQueue.write(owner.instruction);
+                state = State::FINISH_COMPUTE;
+                break;
+            case State::FINISH_COMPUTE:
+                owner.computeCommandQueue.write(owner.instruction);
+                state = State::FINISH_STORE;
+                break;
+            case State::FINISH_STORE:
+                owner.storeCommandQueue.write(owner.instruction);
+                state = State::FINISH;
+                break;
+            case State::FINISH:
                 break;
             }
-            owner.schedule(owner.event, curTick() + 100000);
         }
     } event{*this};
 
@@ -169,16 +181,24 @@ class InstructionFetchModule : public SimObject
         storeCommandQueue{*params.store_command_queue}
     {}
 
-    auto
+    virtual auto
+    init() -> void override
+    {
+        loadCommandQueue.producerEvent = &event;
+        computeCommandQueue.producerEvent = &event;
+        storeCommandQueue.producerEvent = &event;
+    }
+
+    virtual auto
     startup() -> void override
     {
         schedule(event, curTick());
     }
 
-    auto
+    virtual auto
     getPort(const std::string &if_name, PortID idx) -> Port & override
     {
-        if (if_name == std::string_view{"instruction_port"}) {
+        if (if_name == "instruction_port"sv) {
             return instruction_port;
         }
         return SimObject::getPort(if_name, idx);

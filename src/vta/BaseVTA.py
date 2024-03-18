@@ -3,6 +3,7 @@ from m5.proxy import *
 from m5.SimObject import SimObject
 from m5.objects.Buffer import *
 from m5.objects.CommandQueue import *
+from m5.objects.DependencyQueue import *
 from m5.objects.ComputeModule import *
 from m5.objects.InstructionFetchModule import *
 from m5.objects.LoadModule import *
@@ -20,9 +21,21 @@ class BaseVTA(SimObject):
 
     system = Param.System(Parent.any, "system object")
 
+    # VTA configs
+    # reference at https://tvm.apache.org/docs/topic/vta/dev/hardware.html
+
     load_command_queue = CommandQueue()
     compute_command_queue = CommandQueue()
     store_command_queue = CommandQueue()
+
+    compute_to_store_queue = DependencyQueue()
+    store_to_compute_queue = DependencyQueue()
+    compute_to_load_queue = DependencyQueue()
+    load_to_compute_queue = DependencyQueue()
+
+    input_buffer = Buffer()
+    weight_buffer = Buffer()
+    output_buffer = Buffer()
 
     instruction_fetch_module = InstructionFetchModule()
     instruction_fetch_module.load_command_queue = load_command_queue
@@ -33,17 +46,6 @@ class BaseVTA(SimObject):
         instruction_fetch_module,
         "instruction fetch module",
     )
-
-    # VTA configs
-    # reference at https://tvm.apache.org/docs/topic/vta/dev/config.html#parameters-overview
-
-    ################################################################################
-    ########################## the components of VTA ###############################
-
-    ## buffers
-    input_buffer = Param.Buffer(Buffer(), "VTA input buffer")
-    weight_buffer = Param.Buffer(Buffer(), "VTA weight buffer")
-    output_buffer = Param.Buffer(Buffer(), "VTA output buffer")
 
     ## regular module
     compute_module = Param.ComputeModule(ComputeModule(), "compute module")

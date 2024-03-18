@@ -19,6 +19,7 @@ system.mem_ctrl.dram.range = system.mem_ranges[0]
 system.mem_ctrl.dram.image_file = f"{DIR}/vta-dram.img"
 system.mem_ctrl.port = system.membus.mem_side_ports
 system.system_port = system.membus.cpu_side_ports
+system.mem_mode = "timing"
 
 vta = BaseVTA()
 

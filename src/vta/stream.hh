@@ -16,22 +16,16 @@ class Stream
     size_t len{};
 
   public:
-    auto
-    peek() const noexcept -> T
-    {
-        return buf[read_ptr];
-    }
-
-    auto
+    constexpr auto
     pop() noexcept -> T
     {
-        const auto ret{peek()};
+        const auto ret{buf[read_ptr]};
         read_ptr = (read_ptr + 1) % N;
         --len;
         return ret;
     }
 
-    auto
+    constexpr auto
     push(const T &value) noexcept -> void
     {
         buf[write_ptr] = value;
@@ -39,19 +33,19 @@ class Stream
         ++len;
     }
 
-    auto
+    constexpr auto
     empty() const noexcept -> bool
     {
         return len;
     }
 
-    auto
+    constexpr auto
     full() const noexcept -> bool
     {
         return len == N;
     }
 
-    auto
+    constexpr auto
     size() const noexcept -> size_t
     {
         return N;

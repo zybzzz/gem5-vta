@@ -2,10 +2,8 @@ from m5.params import *
 from m5.proxy import *
 from m5.SimObject import SimObject
 from m5.objects.Buffer import *
-from m5.objects.ComputeModule import *
 from m5.objects.CommandQueue import *
-from m5.objects.DataQueue import *
-from m5.objects.InstructionQueue import *
+from m5.objects.ComputeModule import *
 from m5.objects.InstructionFetchModule import *
 from m5.objects.LoadModule import *
 from m5.objects.StoreModule import *
@@ -46,31 +44,6 @@ class BaseVTA(SimObject):
     input_buffer = Param.Buffer(Buffer(), "VTA input buffer")
     weight_buffer = Param.Buffer(Buffer(), "VTA weight buffer")
     output_buffer = Param.Buffer(Buffer(), "VTA output buffer")
-
-    ## data queues
-    compute_to_store_queue = Param.DataQueue(
-        DataQueue(), "compute module to store module queue"
-    )
-    store_to_compute_queue = Param.DataQueue(
-        DataQueue(), "store module to compute module queue"
-    )
-    compute_to_load_queue = Param.DataQueue(
-        DataQueue(), "compute module to load module queue"
-    )
-    load_to_compute_queue = Param.DataQueue(
-        DataQueue(), "load module to compute module queue"
-    )
-
-    ## command queues
-    load_queue = Param.InstructionQueue(
-        InstructionQueue(), "load command queue"
-    )
-    compute_command_queue = Param.InstructionQueue(
-        InstructionQueue(), "compute command queue"
-    )
-    store_queue = Param.InstructionQueue(
-        InstructionQueue(), "store command queue"
-    )
 
     ## regular module
     compute_module = Param.ComputeModule(ComputeModule(), "compute module")

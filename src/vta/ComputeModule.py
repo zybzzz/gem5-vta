@@ -25,6 +25,6 @@ class ComputeModule(SimObject):
         "store module to compute module queue"
     )
 
-    input_buffer = Param.Buffer("VTA input buffer")
-    weight_buffer = Param.Buffer("VTA weight buffer")
-    output_buffer = Param.Buffer("VTA output buffer")
+    input_buffer = Param.InputBuffer("VTA input buffer")
+    weight_buffer = Param.WeightBuffer("VTA weight buffer")
+    output_buffer = Param.OutputBuffer("VTA output buffer")

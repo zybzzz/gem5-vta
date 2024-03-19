@@ -19,4 +19,4 @@ class StoreModule(SimObject):
         "store module to compute module queue"
     )
 
-    output_buffer = Param.Buffer("VTA output buffer")
+    output_buffer = Param.OutputBuffer("VTA output buffer")

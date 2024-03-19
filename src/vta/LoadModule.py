@@ -19,5 +19,5 @@ class LoadModule(SimObject):
         "compute module to load module queue"
     )
 
-    input_buffer = Param.Buffer("VTA input buffer")
-    weight_buffer = Param.Buffer("VTA weight buffer")
+    input_buffer = Param.InputBuffer("VTA input buffer")
+    weight_buffer = Param.WeightBuffer("VTA weight buffer")

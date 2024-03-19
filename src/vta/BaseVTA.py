@@ -35,9 +35,9 @@ class BaseVTA(SimObject):
     compute_to_load_queue = DependencyQueue()
     load_to_compute_queue = DependencyQueue()
 
-    input_buffer = Buffer()
-    weight_buffer = Buffer()
-    output_buffer = Buffer()
+    input_buffer = InputBuffer()
+    weight_buffer = WeightBuffer()
+    output_buffer = OutputBuffer()
 
     instruction_fetch_module = InstructionFetchModule()
     instruction_fetch_module.load_command_queue = load_command_queue

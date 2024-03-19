@@ -1,6 +1,9 @@
 #ifndef STORE_MODULE_HH
 #define STORE_MODULE_HH
 
+#include <string>
+#include <string_view>
+
 #include "base/trace.hh"
 #include "debug/BaseVTAFlag.hh"
 #include "mem/port.hh"
@@ -11,6 +14,7 @@
 #include "vta/buffer.hh"
 #include "vta/command_queue.hh"
 #include "vta/dependency_queue.hh"
+#include "vta/vta.hh"
 
 using namespace std::literals;
 
@@ -66,7 +70,23 @@ class StoreModule : public SimObject
       public:
         ProcessEvent(StoreModule &owner) : owner{owner} {}
 
-        virtual auto process() -> void override {};
+        virtual auto
+        process() -> void override
+        {
+            static enum class State {
+                FETCH,
+                FINISH,
+            } state{};
+
+            switch (state) {
+            case State::FETCH:
+                break;
+            case State::FINISH:
+                owner.finish_ = true;
+                owner.schedule(owner.finishEvent(), curTick());
+                break;
+            }
+        };
     } workingEvent{*this};
 
   public:

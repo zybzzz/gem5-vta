@@ -1,8 +1,7 @@
 from m5.params import *
 from m5.SimObject import SimObject
 from m5.objects.Buffer import *
-from m5.objects.CommandQueue import *
-from m5.objects.DependencyQueue import *
+from m5.objects.Queue import *
 
 
 class StoreModule(SimObject):

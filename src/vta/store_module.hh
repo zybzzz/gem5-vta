@@ -14,8 +14,8 @@
 #include "sim/eventq.hh"
 #include "sim/sim_object.hh"
 #include "vta/buffer/output_buffer.hh"
-#include "vta/command_queue.hh"
-#include "vta/dependency_queue.hh"
+#include "vta/queue/command_queue.hh"
+#include "vta/queue/dependency_queue.hh"
 #include "vta/vta.hh"
 #include "vta/vta_const.hh"
 

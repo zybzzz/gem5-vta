@@ -10,8 +10,8 @@
 #include "vta/buffer/input_buffer.hh"
 #include "vta/buffer/output_buffer.hh"
 #include "vta/buffer/weight_buffer.hh"
-#include "vta/command_queue.hh"
-#include "vta/dependency_queue.hh"
+#include "vta/queue/command_queue.hh"
+#include "vta/queue/dependency_queue.hh"
 
 using namespace std::literals;
 

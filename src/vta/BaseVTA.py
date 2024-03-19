@@ -2,9 +2,8 @@ from m5.params import *
 from m5.proxy import *
 from m5.SimObject import SimObject
 from m5.objects.Buffer import *
-from m5.objects.CommandQueue import *
+from m5.objects.Queue import *
 from m5.objects.ComputeModule import *
-from m5.objects.DependencyQueue import *
 from m5.objects.InstructionFetchModule import *
 from m5.objects.LoadModule import *
 from m5.objects.StoreModule import *

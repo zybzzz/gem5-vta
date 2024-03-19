@@ -16,7 +16,7 @@
 #include "params/InstructionFetchModule.hh"
 #include "sim/cur_tick.hh"
 #include "sim/sim_object.hh"
-#include "vta/command_queue.hh"
+#include "vta/queue/command_queue.hh"
 #include "vta/vta.hh"
 #include "vta/vta_const.hh"
 

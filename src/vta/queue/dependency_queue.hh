@@ -3,7 +3,7 @@
 
 #include "params/DependencyQueue.hh"
 #include "sim/sim_object.hh"
-#include "vta/queue.hh"
+#include "vta/queue/queue.hh"
 #include "vta/vta_hw_config.hh"
 
 namespace gem5

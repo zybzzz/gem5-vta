@@ -4,6 +4,7 @@
 #include "base/trace.hh"
 #include "debug/BaseVTAFlag.hh"
 #include "mem/port.hh"
+#include "mem/request.hh"
 #include "params/LoadModule.hh"
 #include "sim/eventq.hh"
 #include "sim/sim_object.hh"
@@ -22,12 +23,11 @@ class LoadModule : public SimObject
   private:
     vta::MemoryInstruction instruction;
 
-    bool lastInstructionFinish{true};
-
     RequestorID id;
     bool finish_{};
     Event *finishEvent_;
 
+    // from mem
     class DataPort : public RequestPort
     {
       private:
@@ -68,63 +68,132 @@ class LoadModule : public SimObject
       private:
         LoadModule &owner;
 
+        void
+        resetMem(size_t &sram_idx, size_t range)
+        {
+            for (int i{}; i < range; ++i) {
+                for (int j{}; j < vta::INPUT_MATRIX_RATIO; ++j) {
+                    memset(
+                        static_cast<void *>(&(owner.inputBuffer[sram_idx][0])),
+                        0, vta::INPUT_MATRIX_RATIO);
+                }
+                ++sram_idx;
+            }
+
+            return;
+        }
+
       public:
         LoadModuleWorkingEvent(LoadModule &owner) : owner(owner) {}
 
         virtual auto
         process() -> void override
         {
-            static enum class Status {
-                Normal,
-                WaitToRead,
-                WaitToWrite,
-            } status{Status::WaitToRead};
-            /* while (!owner.lastInstructionFinish ||
-                   !owner.loadCommandQueue.empty()) {
-                switch (status) {
-                case Status::WaitToRead:
-                    if (owner.lastInstructionFinish) {
-                        // get instruction from queue
-                        auto tickStruct = owner.loadCommandQueue.pop();
-                        owner.instruction =
-                            tickStruct.value.asMemoryInstruction();
-                        owner.fetchInstTime = tickStruct.time;
-                        owner.lastInstructionFinish = false;
-                    }
-                    if (owner.instruction.pop_next_dependence) {
-                        // check instruction flag then maybe read flag from
-                        // data queue if queue can't read, delay to next time
-                        if (owner.computeToLoadQueue.tryPop()) {
-                            status = Status::Normal;
-                        } else {
-                            owner.reschedule(this, curTick() + 1);
-                            return; // return to wait next
-                        }
-                    }
+            static enum class State {
+                FETCH,
+                DECODE,
+                READ_COMPUTE_TO_LOAD_QUEUE,
+                MEMORY_READ_AND_DISPATCH_TO_BUFFER,
+                WRITE_LOAD_TO_COMPUTER_QUEUE,
+                FINISH
+            } state{State::FETCH};
 
-                    break;
-                case Status::Normal:
-                    // judge and do load
-                    break;
-                case Status::WaitToWrite:
-                    if (owner.instruction.push_next_dependence) {
-                        if (owner.loadToComputeQueue.tryPush()) {
-                            status = Status::WaitToRead;
-                            owner.lastInstructionFinish = true;
-                        } else {
-                            // check instruction flag then maybe write flag
-                            // from data queue if queue can't read, delay to
-                            // next time
-                            status = Status::WaitToWrite;
-                            owner.reschedule(this, curTick() + 1);
-                            return; // return to wait next
-                        }
-                    }
+            static vta::MemoryInstruction instruction;
+
+            switch (state) {
+            case State::FETCH:
+                state = State::DECODE;
+                owner.loadCommandQueue.read();
+                break;
+            case State::DECODE:
+                instruction = static_cast<vta::MemoryInstruction>(
+                    owner.loadCommandQueue.read_buf);
+                if (instruction.opcode == vta::Opcode::FINISH) {
+                    state = State::FINISH;
+                    owner.schedule(this, curTick());
                     break;
                 }
-            } */
+                state = State::READ_COMPUTE_TO_LOAD_QUEUE;
+                owner.schedule(this, curTick());
+                break;
+            case State::READ_COMPUTE_TO_LOAD_QUEUE:
+                state = State::MEMORY_READ_AND_DISPATCH_TO_BUFFER;
+                if (instruction.pop_next_dependence) {
+                    owner.computeToLoadQueue.read();
+                    break;
+                }
+                owner.schedule(this, curTick());
+                break;
+            case State::MEMORY_READ_AND_DISPATCH_TO_BUFFER: {
+                size_t x_width{static_cast<size_t>(instruction.x_pad_0 +
+                                                   instruction.x_size +
+                                                   instruction.x_pad_1)};
+                size_t y_offset_0{
+                    static_cast<size_t>(x_width * instruction.y_pad_0)};
+                size_t y_offset_1{
+                    static_cast<size_t>(x_width * instruction.y_pad_1)};
+                size_t sram_idx{static_cast<size_t>(instruction.sram_base)};
+                size_t dram_idx{static_cast<size_t>(instruction.dram_base)};
 
-            owner.reschedule(this, curTick() + 1);
+                if (instruction.memory_type == vta::MemoryId::INPUT) {
+                    // load pad 2d
+                    resetMem(sram_idx, y_offset_0);
+                    for (int y{}; y < instruction.y_size; ++y) {
+                        resetMem(sram_idx, instruction.x_pad_0);
+
+                        const auto req{std::make_shared<Request>(
+                            Addr{dram_idx * vta::INPUT_MATRIX_RATIO},
+                            instruction.x_size * vta::INPUT_BUFFER_SIZE,
+                            Request::PHYSICAL, owner.id)};
+                        auto *const packet{new Packet{req, MemCmd::ReadReq}};
+                        packet->dataStaticConst(
+                            owner.inputBuffer[sram_idx][0].data());
+                        const auto ret{owner.data_port.sendTimingReq(packet)};
+                        assert(ret);
+
+                        sram_idx += instruction.x_size;
+                        dram_idx += instruction.x_stride;
+                    }
+                    resetMem(sram_idx, y_offset_1);
+                } else if (instruction.memory_type == vta::MemoryId::WEIGHT) {
+                    // load 2d
+                    for (int y{}; y < instruction.y_size; ++y) {
+                        const auto req{std::make_shared<Request>(
+                            Addr{dram_idx * vta::WEIGHT_MATRIX_RATIO},
+                            instruction.x_size * vta::WEIGHT_BUFFER_SIZE,
+                            Request::PHYSICAL, owner.id)};
+                        auto *const packet{new Packet{req, MemCmd::ReadReq}};
+                        packet->dataStaticConst(
+                            owner.weightBuffer[sram_idx][0].data());
+                        const auto ret{owner.data_port.sendTimingReq(packet)};
+                        assert(ret);
+
+                        sram_idx += instruction.x_size;
+                        dram_idx += instruction.x_stride;
+                    }
+                } else {
+                    panic("invalid memory id\n");
+                }
+                state = State::WRITE_LOAD_TO_COMPUTER_QUEUE;
+                owner.schedule(this, curTick());
+                break;
+            }
+            case State::WRITE_LOAD_TO_COMPUTER_QUEUE:
+                state = State::FETCH;
+                if (instruction.push_next_dependence) {
+                    owner.loadToComputeQueue.write(true);
+                    break;
+                }
+                owner.schedule(this, curTick());
+                break;
+            case State::FINISH:
+                if (owner.finish()) {
+                    panic("Finished\n");
+                }
+                owner.finish_ = true;
+                owner.schedule(owner.finishEvent(), curTick());
+                break;
+            }
         }
     } workingEvent{*this};
 
@@ -144,10 +213,11 @@ class LoadModule : public SimObject
     virtual auto
     init() -> void override
     {
-        loadCommandQueue.consumerEvent = nullptr;
+        // some func in command queue
+        loadCommandQueue.consumerEvent = &workingEvent;
 
-        loadToComputeQueue.producerEvent = nullptr;
-        computeToLoadQueue.consumerEvent = nullptr;
+        loadToComputeQueue.producerEvent = &workingEvent;
+        computeToLoadQueue.consumerEvent = &workingEvent;
     }
 
     virtual auto

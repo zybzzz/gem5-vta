@@ -3,6 +3,9 @@
 
 #include <array>
 #include <cstdint>
+#include <iomanip>
+#include <ios>
+#include <ostream>
 
 #include "vta/bit_cast.hh"
 #include "vta/stream.hh"
@@ -12,9 +15,26 @@
 namespace vta
 {
 
+#pragma pack(1)
 struct Instruction
 {
-    std::array<uint8_t, INSTRUCTION_WIDTH> data;
+    std::array<uint8_t, INSTRUCTION_WIDTH / 8> data;
+
+    struct CommonInstruction
+    {
+        Opcode opcode : OPCODE_BIT_WIDTH;
+        uint64_t pop_prev_dependence : 1;
+        uint64_t pop_next_dependence : 1;
+        uint64_t push_prev_dependence : 1;
+        uint64_t push_next_dependence : 1;
+        uint64_t : 64 - OPCODE_BIT_WIDTH - 4;
+        uint64_t : 64;
+
+        operator Instruction() const noexcept
+        {
+            return bit_cast<Instruction>(*this);
+        }
+    };
 
     struct MemoryInstruction
     {
@@ -103,50 +123,70 @@ struct Instruction
         }
     };
 
+    constexpr
     operator MemoryInstruction() const noexcept
     {
         return bit_cast<MemoryInstruction>(*this);
     }
 
+    constexpr
     operator GemmInstruction() const noexcept
     {
         return bit_cast<GemmInstruction>(*this);
     }
 
+    constexpr
     operator AluInstruction() const noexcept
     {
         return bit_cast<AluInstruction>(*this);
     }
 
-    auto
+    constexpr auto
     opcode() const noexcept -> Opcode
     {
-        return static_cast<Opcode>(data.front());
+        return bit_cast<CommonInstruction>(*this).opcode;
     }
 
-    auto
+    constexpr auto
     asMemoryInstruction() const noexcept -> MemoryInstruction
     {
         return *this;
     }
 
-    auto
+    constexpr auto
     asGemmInstruction() const noexcept -> GemmInstruction
     {
         return *this;
     }
 
-    auto
+    constexpr auto
     asAluInstruction() const noexcept -> AluInstruction
     {
         return *this;
     }
+
+    friend auto
+    operator<<(
+        std::ostream &os, const Instruction &instruction) -> std::ostream &
+    {
+        const auto flags{os.flags()};
+        const auto fill{os.fill('0')};
+        const auto [low, high]{bit_cast<std::array<uint64_t, 2>>(instruction)};
+        os << "0x" << std::hex << std::setw(16) << high << std::setw(16)
+           << low;
+        os.flags(flags);
+        os.fill(fill);
+        return os;
+    }
 };
 
-using BusType = std::array<uint8_t, BUS_WIDTH / 8>;
+#pragma pack()
 
-using CommandQueue = Stream<Instruction, STREAM_IN_DEPTH>;
-using DependencyQueue = Stream<bool, STREAM_IN_DEPTH>;
+using MemoryInstruction = Instruction::MemoryInstruction;
+using GemmInstruction = Instruction::GemmInstruction;
+using AluInstruction = Instruction::AluInstruction;
+
+using BusType = std::array<uint8_t, BUS_WIDTH / 8>;
 
 using InputBuffer =
     std::array<std::array<BusType, INPUT_MATRIX_RATIO>, INPUT_BUFFER_DEPTH>;

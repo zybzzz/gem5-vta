@@ -1,48 +1,123 @@
 #ifndef STORE_MODULE_HH
 #define STORE_MODULE_HH
 
+#include "base/trace.hh"
+#include "debug/BaseVTAFlag.hh"
+#include "mem/port.hh"
+#include "mem/request.hh"
 #include "params/StoreModule.hh"
 #include "sim/eventq.hh"
 #include "sim/sim_object.hh"
 #include "vta/buffer.hh"
-#include "vta/data_queue.hh"
-#include "vta/instruction_queue.hh"
-#include "vta/status.hh"
-#include "vta/vta.hh"
+#include "vta/command_queue.hh"
+#include "vta/dependency_queue.hh"
+
+using namespace std::literals;
 
 namespace gem5
 {
+
 class StoreModule : public SimObject
 {
   private:
-    InstructionQueue *storeCommandQueue;
+    RequestorID id;
+    bool finish_{};
+    Event *finishEvent_;
 
-    DataQueue *computeToStoreQueue;
-    DataQueue *storeToComputeQueue;
-
-    Buffer *outputBuffer;
-
-    StoreModuleStatus status;
-
-    class StoreModuleWorkingEvent : public Event
+    class DataPort : public RequestPort
     {
       private:
-        StoreModule *storeModule;
+        StoreModule &owner;
 
       public:
-        StoreModuleWorkingEvent(StoreModule *storeModule);
-        auto process() -> void override;
-    };
+        DataPort(const std::string_view name, StoreModule &owner) :
+            RequestPort{std::string{name}}, owner{owner}
+        {}
 
-    StoreModuleWorkingEvent workingEvent;
+      protected:
+        virtual auto
+        recvTimingResp(PacketPtr pkt) -> bool override
+        {
+            delete pkt;
+            return true;
+        }
 
-    vta::Instruction::MemoryInstruction *instruction;
+        virtual auto
+        recvReqRetry() -> void override
+        {}
+
+        virtual auto
+        sendRetryResp() -> void override
+        {}
+    } data_port;
+
+    CommandQueue &storeCommandQueue;
+
+    DependencyQueue &computeToStoreQueue;
+    DependencyQueue &storeToComputeQueue;
+
+    Buffer &outputBuffer;
+
+    class ProcessEvent : public Event
+    {
+      private:
+        StoreModule &owner;
+
+      public:
+        ProcessEvent(StoreModule &owner) : owner{owner} {}
+
+        virtual auto process() -> void override {};
+    } workingEvent{*this};
 
   public:
     PARAMS(StoreModule);
 
-    StoreModule(const Params &params);
+    StoreModule(const Params &params) :
+        SimObject{params},
+        data_port{params.name + ".store_data_port", *this},
+        storeCommandQueue{*params.store_command_queue},
+        computeToStoreQueue{*params.compute_to_store_queue},
+        storeToComputeQueue{*params.store_to_compute_queue},
+        outputBuffer{*params.output_buffer}
+    {}
+
+    virtual auto
+    init() -> void override
+    {
+        storeCommandQueue.consumerEvent = nullptr;
+
+        computeToStoreQueue.consumerEvent = nullptr;
+        storeToComputeQueue.producerEvent = nullptr;
+    }
+
+    virtual auto
+    getPort(const std::string &if_name, PortID idx) -> Port & override
+    {
+        if (if_name == "store_data_port"sv) {
+            return data_port;
+        }
+        return SimObject::getPort(if_name, idx);
+    }
+
+    constexpr auto
+    requestorId() noexcept -> RequestorID &
+    {
+        return id;
+    }
+
+    constexpr auto
+    finish() -> bool &
+    {
+        return finish_;
+    }
+
+    constexpr auto
+    finishEvent() noexcept -> Event *&
+    {
+        return finishEvent_;
+    }
 };
+
 } // namespace gem5
 
 #endif

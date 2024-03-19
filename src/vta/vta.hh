@@ -39,9 +39,9 @@ struct Instruction
     struct MemoryInstruction
     {
         Opcode opcode : OPCODE_BIT_WIDTH;
-        uint64_t : 1;
+        uint64_t pop_prev_dependence: 1;
         uint64_t pop_next_dependence : 1;
-        uint64_t : 1;
+        uint64_t push_prev_dependence: 1;
         uint64_t push_next_dependence : 1;
         MemoryId memory_type : MEM_OP_ID_BIT_WIDTH;
         uint64_t sram_base : MEM_OP_SRAM_ADDR_BIT_WIDTH;

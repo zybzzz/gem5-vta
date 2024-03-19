@@ -1,21 +1,25 @@
 Import("*")
 
 SimObject("BaseVTA.py", sim_objects=["BaseVTA"])
-SimObject("Buffer.py", sim_objects=["Buffer"])
-SimObject("CommandQueue.py", sim_objects=["CommandQueue"])
 SimObject("ComputeModule.py", sim_objects=["ComputeModule"])
-SimObject("DependencyQueue.py", sim_objects=["DependencyQueue"])
 SimObject("InstructionFetchModule.py", sim_objects=["InstructionFetchModule"])
 SimObject("LoadModule.py", sim_objects=["LoadModule"])
 SimObject("StoreModule.py", sim_objects=["StoreModule"])
+SimObject(
+    "buffer/Buffer.py",
+    sim_objects=["InputBuffer", "OutputBuffer", "WeightBuffer"],
+)
+SimObject("queue/Queue.py", sim_objects=["CommandQueue", "DependencyQueue"])
 
 Source("base_vta.cc")
-Source("buffer.cc")
-Source("command_queue.cc")
+Source("buffer/input_buffer.cc")
+Source("buffer/output_buffer.cc")
+Source("buffer/weight_buffer.cc")
 Source("compute_module.cc")
-Source("dependency_queue.cc")
 Source("instruction_fetch_module.cc")
 Source("load_module.cc")
+Source("queue/command_queue.cc")
+Source("queue/dependency_queue.cc")
 Source("store_module.cc")
 
 DebugFlag("BaseVTAFlag")

@@ -1,8 +1,7 @@
 from m5.params import *
 from m5.SimObject import SimObject
 from m5.objects.Buffer import *
-from m5.objects.CommandQueue import *
-from m5.objects.DependencyQueue import *
+from m5.objects.Queue import *
 
 
 class ComputeModule(SimObject):
@@ -25,6 +24,6 @@ class ComputeModule(SimObject):
         "store module to compute module queue"
     )
 
-    input_buffer = Param.Buffer("VTA input buffer")
-    weight_buffer = Param.Buffer("VTA weight buffer")
-    output_buffer = Param.Buffer("VTA output buffer")
+    input_buffer = Param.InputBuffer("VTA input buffer")
+    weight_buffer = Param.WeightBuffer("VTA weight buffer")
+    output_buffer = Param.OutputBuffer("VTA output buffer")

@@ -7,9 +7,10 @@
 #include "params/LoadModule.hh"
 #include "sim/eventq.hh"
 #include "sim/sim_object.hh"
-#include "vta/buffer.hh"
-#include "vta/command_queue.hh"
-#include "vta/dependency_queue.hh"
+#include "vta/buffer/input_buffer.hh"
+#include "vta/buffer/weight_buffer.hh"
+#include "vta/queue/command_queue.hh"
+#include "vta/queue/dependency_queue.hh"
 
 using namespace std::literals;
 
@@ -59,8 +60,8 @@ class LoadModule : public SimObject
     DependencyQueue &loadToComputeQueue;
     DependencyQueue &computeToLoadQueue;
 
-    Buffer &inputBuffer;
-    Buffer &weightBuffer;
+    InputBuffer &inputBuffer;
+    WeightBuffer &weightBuffer;
 
     class LoadModuleWorkingEvent : public Event
     {

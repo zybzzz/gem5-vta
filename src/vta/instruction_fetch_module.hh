@@ -18,7 +18,6 @@
 #include "sim/sim_object.hh"
 #include "vta/queue/command_queue.hh"
 #include "vta/vta.hh"
-#include "vta/vta_const.hh"
 
 using namespace std::literals;
 

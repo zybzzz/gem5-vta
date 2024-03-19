@@ -2,7 +2,6 @@
 #define VTA_CONST_HH
 
 #include <cstddef>
-#include <cstdint>
 
 #include "vta/vta_config.hh"
 #include "vta/vta_hw_config.hh"
@@ -84,27 +83,6 @@ constexpr size_t OUTPUT_BUFFER_DEPTH{1 << LOG_OUTPUT_BUFFER_DEPTH};
 // Opcode
 constexpr size_t OPCODE_BIT_WIDTH{3};
 
-enum class Opcode : uint8_t
-{
-    LOAD = 0,
-    STORE = 1,
-    GEMM = 2,
-    FINISH = 3,
-    ALU = 4,
-};
-
-// ALU opcode
-constexpr size_t ALU_OPCODE_BIT_WIDTH{3};
-
-enum class AluOpcode : uint8_t
-{
-    MIN = 0,
-    MAX = 1,
-    ADD = 2,
-    SHR = 3,
-    MUL = 4,
-};
-
 // Load, Store
 constexpr size_t MEM_OP_ID_BIT_WIDTH{3};
 constexpr size_t MEM_OP_SRAM_ADDR_BIT_WIDTH{16};
@@ -117,19 +95,10 @@ constexpr size_t MEM_OP_PAD_BIT_WIDTH{4};
 constexpr size_t LOOP_ITER_WIDTH{14};
 
 // ALU
+constexpr size_t ALU_OPCODE_BIT_WIDTH{3};
 constexpr size_t ALU_OP_IMMEDIATE_BIT_WIDTH{16};
-constexpr size_t ALU_OP_SHR_WIDTH{LOG_ACCUMULATOR_WIDTH};
-constexpr size_t ALU_OP_MUL_WIDTH{8};
-
-enum class MemoryId : uint8_t
-{
-    MICRO_OP = 0,
-    WEIGHT = 1,
-    INPUT = 2,
-    ACCUMULATOR = 3,
-    OUTPUT = 4,
-    ACCUMULATOR_8BIT = 5,
-};
+constexpr size_t ALU_OP_SHR_BIT_WIDTH{LOG_ACCUMULATOR_WIDTH};
+constexpr size_t ALU_OP_MUL_BIT_WIDTH{8};
 
 } // namespace vta
 

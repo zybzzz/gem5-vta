@@ -7,6 +7,7 @@
 #include <string>
 #include <string_view>
 
+#include "base/logging.hh"
 #include "base/trace.hh"
 #include "base/types.hh"
 #include "debug/BaseVTAFlag.hh"
@@ -57,11 +58,15 @@ class InstructionFetchModule : public SimObject
 
         virtual auto
         recvReqRetry() -> void override
-        {}
+        {
+            owner.schedule(owner.event, curTick());
+        }
 
         virtual auto
         sendRetryResp() -> void override
-        {}
+        {
+            panic("Unreachable\n");
+        }
     } instruction_port;
 
     CommandQueue &loadCommandQueue;
@@ -100,8 +105,12 @@ class InstructionFetchModule : public SimObject
                 auto *const packet{new Packet{req, MemCmd::ReadReq}};
                 DPRINTF(BaseVTAFlag, "Packet: %s\n", packet->print());
                 packet->dataStatic(&owner.instruction);
-                const auto ret{owner.instruction_port.sendTimingReq(packet)};
-                assert(ret);
+                if (const auto ret{
+                        owner.instruction_port.sendTimingReq(packet)};
+                    !ret) {
+                    delete packet;
+                    break;
+                }
                 state = State::DECODE;
                 break;
             }

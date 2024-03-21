@@ -27,8 +27,6 @@ namespace gem5
 class StoreModule : public SimObject
 {
   private:
-    vta::MemoryInstruction instruction;
-
     RequestorID id;
     bool finish_{};
     Event *finishEvent_;
@@ -53,11 +51,15 @@ class StoreModule : public SimObject
 
         virtual auto
         recvReqRetry() -> void override
-        {}
+        {
+            owner.schedule(owner.event, curTick());
+        }
 
         virtual auto
         sendRetryResp() -> void override
-        {}
+        {
+            panic("Unreachable\n");
+        }
     } data_port;
 
     CommandQueue &storeCommandQueue;
@@ -124,8 +126,11 @@ class StoreModule : public SimObject
                 auto *const packet{new Packet{req, MemCmd::WriteReq}};
                 packet->dataStaticConst(
                     owner.outputBuffer[sramAddr][0].data());
-                const auto ret{owner.data_port.sendTimingReq(packet)};
-                assert(ret);
+                if (const auto ret{owner.data_port.sendTimingReq(packet)};
+                    !ret) {
+                    delete packet;
+                    break;
+                }
 
                 ++y;
                 sramAddr += instruction.x_size;

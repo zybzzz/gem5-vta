@@ -206,7 +206,6 @@ void write_tensor(
   IDX_T idx,
   NARROW_T src[Y_DIM][X_DIM],
   WIDE_T dst[][NARROW_W * Y_DIM * X_DIM / WIDE_W]) {
-#pragma HLS INLINE
 
   for (int p = 0; p < NARROW_W * Y_DIM * X_DIM / WIDE_W; p++) {
     WIDE_T packet = 0;
